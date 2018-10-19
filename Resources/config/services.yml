@@ -1,4 +1,9 @@
 services:
+    sherlockode_configuration.controller.parameter:
+        class: Sherlockode\ConfigurationBundle\Controller\ParameterController
+        arguments:
+            - '@sherlockode_configuration.parameter_manager'
+
     sherlockode_configuration.parameter_manager:
         class: Sherlockode\ConfigurationBundle\Manager\ParameterManager
         arguments:
@@ -17,3 +22,5 @@ services:
             - '%sherlockode_configuration.parameter_class%'
         tags:
             - {name: form.type }
+
+    Sherlockode\ConfigurationBundle\Manager\ParameterManager: '@sherlockode_configuration.parameter_manager'

@@ -1,0 +1,12 @@
+{% extends '@SherlockodeConfiguration/base.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'parameters'|trans({}, 'SherlockodeConfigurationBundle') }}</h1>
+    {{ form_start(form) }}
+    {% for child in form %}
+        {{ form_widget(child) }}
+    {% endfor %}
+
+    <button type="submit">{{ 'submit'|trans({}, 'SherlockodeConfigurationBundle') }}</button>
+    {{ form_end(form) }}
+{% endblock %}
