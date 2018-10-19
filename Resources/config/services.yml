@@ -1,0 +1,19 @@
+services:
+    sherlockode_configuration.parameter_manager:
+        class: Sherlockode\ConfigurationBundle\Manager\ParameterManager
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%sherlockode_configuration.parameter_class%'
+            - '%sherlockode_configuration.parameters%'
+    sherlockode_configuration.form.parameters:
+        class: Sherlockode\ConfigurationBundle\Form\Type\ParametersType
+        arguments:
+            - '@sherlockode_configuration.parameter_manager'
+        tags:
+            - {name: form.type }
+    sherlockode_configuration.form.parameter:
+        class: Sherlockode\ConfigurationBundle\Form\Type\ParameterType
+        arguments:
+            - '%sherlockode_configuration.parameter_class%'
+        tags:
+            - {name: form.type }
