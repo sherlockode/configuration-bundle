@@ -1,0 +1,22 @@
+{
+    "name": "sherlockode/configuration-bundle",
+    "description": "Symfony bundle for configuration purposes",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Sherlockode",
+            "email": "contact@sherlockode.fr"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.1",
+        "symfony/framework-bundle": "^3.0|^4.0"
+    },
+    "suggest": {
+        "vich/uploader-bundle": "Allows to use Vich Uploader to handle file uploads"
+    },
+    "autoload": {
+        "psr-4": { "Sherlockode\\AdvancedFormBundle\\": "" }
+    }
+}
