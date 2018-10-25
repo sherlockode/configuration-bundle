@@ -17,6 +17,6 @@
         "vich/uploader-bundle": "Allows to use Vich Uploader to handle file uploads"
     },
     "autoload": {
-        "psr-4": { "Sherlockode\\AdvancedFormBundle\\": "" }
+        "psr-4": { "Sherlockode\\ConfigurationBundle\\": "" }
     }
 }
