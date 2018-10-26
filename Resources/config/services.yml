@@ -1,6 +1,7 @@
 services:
     sherlockode_configuration.controller.parameter:
         class: Sherlockode\ConfigurationBundle\Controller\ParameterController
+        public: true
         arguments:
             - '@sherlockode_configuration.parameter_manager'
 
