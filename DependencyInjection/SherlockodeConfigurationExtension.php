@@ -22,5 +22,6 @@ class SherlockodeConfigurationExtension extends Extension
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader = new YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
+        $loader->load('field_types.yml');
     }
 }
