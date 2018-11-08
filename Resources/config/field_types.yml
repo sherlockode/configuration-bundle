@@ -1,0 +1,5 @@
+services:
+    sherlockode_configuration.field.text:
+        class: Sherlockode\ConfigurationBundle\FieldType\TextField
+        tags:
+            - {name: sherlockode_configuration.field }

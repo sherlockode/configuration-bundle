@@ -2,9 +2,10 @@
 
 namespace Sherlockode\ConfigurationBundle\Form\Type;
 
+use Sherlockode\ConfigurationBundle\Manager\FieldTypeManager;
+use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,11 +20,18 @@ class ParameterType extends AbstractType
     private $class;
 
     /**
-     * @param string $class
+     * @var FieldTypeManager
      */
-    public function __construct($class)
+    private $fieldTypeManager;
+
+    /**
+     * @param string           $class
+     * @param FieldTypeManager $fieldTypeManager
+     */
+    public function __construct($class, FieldTypeManager $fieldTypeManager)
     {
         $this->class = $class;
+        $this->fieldTypeManager = $fieldTypeManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,6 +47,7 @@ class ParameterType extends AbstractType
         $builder->addViewTransformer(new CallbackTransformer(function ($data) {
             return $data;
         }, function ($data) use ($builder) {
+            /** @var ParameterInterface $data */
             $data->setPath($builder->getName());
 
             return $data;
@@ -54,19 +63,14 @@ class ParameterType extends AbstractType
     /**
      * @param string $type
      *
-     * @return string
-     * @throws \Exception
+     * @return array
      */
     private function getFormConfiguration($type)
     {
-        $availableTypes = [
-            'text' => ['type' => TextType::class, 'options' => []],
+        $field = $this->fieldTypeManager->getField($type);
+        return [
+            'type' => $field->getFormType(),
+            'options' => $field->getFormOptions(),
         ];
-
-        if (!isset($availableTypes[$type])) {
-            throw new \Exception(sprintf('Unknown parameter type "%s"', $type));
-        }
-
-        return $availableTypes[$type];
     }
 }
