@@ -125,3 +125,10 @@ It is possible to provide a default value if the entry has not been set.
 $email = $parameterManager->get('contact_email');
 $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 ```
+
+## Field types
+
+Out of the box, the bundle provides several field types located in the namespace Sherlockode\ConfigurationBundle\FieldType.
+The `getName()` method is the alias to use in your configuration (like `text` or `textarea`).
+
+In order to add custom field types, just create a service implementing the FieldTypeInterface interface and tag it with `sherlockode_configuration.field`.
