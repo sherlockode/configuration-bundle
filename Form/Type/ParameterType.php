@@ -44,6 +44,10 @@ class ParameterType extends AbstractType
             ->add('value', $formConfig['type'], $childOptions)
         ;
 
+        if ($formConfig['model_transformer']) {
+            $builder->addModelTransformer($formConfig['model_transformer']);
+        }
+
         $builder->addViewTransformer(new CallbackTransformer(function ($data) {
             return $data;
         }, function ($data) use ($builder) {
@@ -68,9 +72,11 @@ class ParameterType extends AbstractType
     private function getFormConfiguration($type)
     {
         $field = $this->fieldTypeManager->getField($type);
+
         return [
             'type' => $field->getFormType(),
             'options' => $field->getFormOptions(),
+            'model_transformer' => $field->getModelTransformer(),
         ];
     }
 }
