@@ -7,3 +7,7 @@ services:
         class: Sherlockode\ConfigurationBundle\FieldType\TextareaField
         tags:
             - {name: sherlockode_configuration.field }
+    sherlockode_configuration.field.url:
+        class: Sherlockode\ConfigurationBundle\FieldType\UrlField
+        tags:
+            - {name: sherlockode_configuration.field }
