@@ -3,3 +3,7 @@ services:
         class: Sherlockode\ConfigurationBundle\FieldType\TextField
         tags:
             - {name: sherlockode_configuration.field }
+    sherlockode_configuration.field.textarea:
+        class: Sherlockode\ConfigurationBundle\FieldType\TextareaField
+        tags:
+            - {name: sherlockode_configuration.field }
