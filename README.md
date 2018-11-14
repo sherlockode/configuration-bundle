@@ -34,7 +34,7 @@ You will need a Parameter entity in order to store the configuration values in t
 ```php
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Sherlockode\ConfigurationBundle\Model\Parameter as BaseParameter;
@@ -76,14 +76,14 @@ The entity class you just created must be set in the bundle's configuration:
 ```yaml
 sherlockode_configuration:
     entity_class:
-        parameter: AppBundle\Entity\Parameter
+        parameter: App\Entity\Parameter
 ```
 
 Now you are free to define any configuration entry you'd like by using the "parameters" key:
 ```yaml
 sherlockode_configuration:
     entity_class:
-        parameter: AppBundle\Entity\Parameter
+        parameter: App\Entity\Parameter
     parameters:
         contact_email:
             label: My customer service contact email
