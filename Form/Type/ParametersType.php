@@ -40,6 +40,10 @@ class ParametersType extends AbstractType
             }
             return $newData;
         }, function ($data) use ($builder) {
+            /** @var ParameterInterface $param */
+            foreach ($data as $name => $param) {
+                $param->setPath($name);
+            }
             return $data;
         }));
     }

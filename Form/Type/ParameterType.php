@@ -47,15 +47,6 @@ class ParameterType extends AbstractType
         $builder
             ->add('value', $formConfig['type'], $childOptions)
         ;
-
-        $builder->addViewTransformer(new CallbackTransformer(function ($data) {
-            return $data;
-        }, function ($data) use ($builder) {
-            /** @var ParameterInterface $data */
-            $data->setPath($builder->getName());
-
-            return $data;
-        }));
     }
 
     public function configureOptions(OptionsResolver $resolver)
