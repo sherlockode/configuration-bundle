@@ -38,7 +38,11 @@ class ParameterType extends AbstractType
     {
         $formConfig = $this->getFormConfiguration($options['parameter_field_type']);
 
-        $childOptions = array_merge(['label' => $options['label']], $formConfig['options']);
+        $baseOptions = [
+            'label' => $options['label'],
+            'translation_domain' => false,
+        ];
+        $childOptions = array_merge($baseOptions, $formConfig['options']);
 
         $builder
             ->add('value', $formConfig['type'], $childOptions)
