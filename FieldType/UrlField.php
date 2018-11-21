@@ -4,7 +4,7 @@ namespace Sherlockode\ConfigurationBundle\FieldType;
 
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class UrlField implements FieldTypeInterface
+class UrlField extends AbstractField implements FieldTypeInterface
 {
     /**
      * @return string

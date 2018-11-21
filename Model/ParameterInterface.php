@@ -22,12 +22,15 @@ interface ParameterInterface
     public function setPath($path);
 
     /**
-     * @return mixed
+     * Return the value stored in the database.
+     * This value is always a string. Use TransformerInterface for non-primary types
+     *
+     * @return string
      */
     public function getValue();
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return $this
      */

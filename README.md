@@ -95,31 +95,34 @@ sherlockode_configuration:
 
 ## Usage
 
-This bundles provide a FormType dedicated to editing the parameters.
-Just create a form with the ParametersType, and get the existing parameters from the DB like this:
+This bundles provides the ParametersType, a FormType dedicated to editing the parameters.
+The Model data for the form is an associative array of the paths and existing values.
+You can get the existing parameters from the DB using the `ParameterManager`:
 
 ```php
 <?php
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
 
 // $parameterManager has been injected
-$parameters = $this->getDoctrine()->getRepository($parameterManager->getClass())->findAll();
-$form = $this->createForm(ParametersType::class, $parameters);
+$data = $parameterManager->getAll();
+// or using an associative array:
+// $data = ['contact_email' => 'me@example.com', 'max_user_login_attempts' => 5];
+
+$form = $this->createForm(ParametersType::class, $data);
 // handle form submission
 $form->handleRequest($request);
 if ($form->isSubmitted() && $form->isValid()) {
     $params = $form->getData();
-    $om = $this->getDoctrine()->getManager();
-    foreach ($params as $param) {
-        $om->persist($param);
+    foreach ($params as $path => $value) {
+        $this->parameterManager->set($path, $value);
     }
-    $om->flush();
+    $parameterManager->save();
 }
 //...
 ```
 
 You are now able to retrieve any configuration value by using the ParameterManager service.
-It is possible to provide a default value if the entry has not been set.
+It is possible to provide a default value to return if the entry has not been set.
 
 ```php
 $email = $parameterManager->get('contact_email');
@@ -131,4 +134,4 @@ $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 Out of the box, the bundle provides several field types located in the namespace Sherlockode\ConfigurationBundle\FieldType.
 The `getName()` method is the alias to use in your configuration (like `text` or `textarea`).
 
-In order to add custom field types, just create a service implementing the FieldTypeInterface interface and tag it with `sherlockode_configuration.field`.
+In order to add custom field types, you should create a service implementing the FieldTypeInterface interface and tag it with `sherlockode_configuration.field`.

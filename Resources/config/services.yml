@@ -11,18 +11,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%sherlockode_configuration.parameter_class%'
             - '%sherlockode_configuration.parameters%'
+            - '@sherlockode_configuration.field_manager'
     sherlockode_configuration.field_manager:
         class: Sherlockode\ConfigurationBundle\Manager\FieldTypeManager
     sherlockode_configuration.form.parameters:
         class: Sherlockode\ConfigurationBundle\Form\Type\ParametersType
         arguments:
             - '@sherlockode_configuration.parameter_manager'
-        tags:
-            - {name: form.type }
-    sherlockode_configuration.form.parameter:
-        class: Sherlockode\ConfigurationBundle\Form\Type\ParameterType
-        arguments:
-            - '%sherlockode_configuration.parameter_class%'
             - '@sherlockode_configuration.field_manager'
         tags:
             - {name: form.type }
