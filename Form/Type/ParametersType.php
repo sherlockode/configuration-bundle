@@ -2,10 +2,9 @@
 
 namespace Sherlockode\ConfigurationBundle\Form\Type;
 
+use Sherlockode\ConfigurationBundle\Manager\FieldTypeManager;
 use Sherlockode\ConfigurationBundle\Manager\ParameterManager;
-use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -18,33 +17,46 @@ class ParametersType extends AbstractType
      */
     private $parameterManager;
 
-    public function __construct(ParameterManager $parameterManager)
+    /**
+     * @var FieldTypeManager
+     */
+    private $fieldTypeManager;
+
+    public function __construct(ParameterManager $parameterManager, FieldTypeManager $fieldTypeManager)
     {
+        $this->fieldTypeManager = $fieldTypeManager;
         $this->parameterManager = $parameterManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->parameterManager->getConfiguration() as $path => $config) {
-            $builder->add($path, ParameterType::class, [
-                'label' => $config['label'],
-                'parameter_field_type' => $config['type'],
-            ]);
-        }
+            $formConfig = $this->getFormConfiguration($config['type']);
 
-        $builder->addViewTransformer(new CallbackTransformer(function ($data) {
-            $newData = [];
-            /** @var ParameterInterface $param */
-            foreach ($data as $param) {
-                $newData[$param->getPath()] = $param;
-            }
-            return $newData;
-        }, function ($data) use ($builder) {
-            /** @var ParameterInterface $param */
-            foreach ($data as $name => $param) {
-                $param->setPath($name);
-            }
-            return $data;
-        }));
+            $baseOptions = [
+                'label' => $config['label'],
+                'translation_domain' => false,
+            ];
+            $childOptions = array_merge($baseOptions, $formConfig['options']);
+
+            $builder
+                ->add($path, $formConfig['type'], $childOptions)
+            ;
+        }
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return array
+     */
+    private function getFormConfiguration($type)
+    {
+        $field = $this->fieldTypeManager->getField($type);
+
+        return [
+            'type' => $field->getFormType(),
+            'options' => $field->getFormOptions(),
+        ];
     }
 }

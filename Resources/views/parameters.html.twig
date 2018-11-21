@@ -4,7 +4,7 @@
     <h1>{{ 'parameters'|trans({}, 'SherlockodeConfigurationBundle') }}</h1>
     {{ form_start(form) }}
     {% for child in form %}
-        {{ form_widget(child) }}
+        {{ form_row(child) }}
     {% endfor %}
 
     <button type="submit">{{ 'submit'|trans({}, 'SherlockodeConfigurationBundle') }}</button>

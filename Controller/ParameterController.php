@@ -35,17 +35,15 @@ class ParameterController extends Controller
      */
     public function listAction(Request $request)
     {
-        $parameters = $this->getDoctrine()->getRepository($this->parameterManager->getClass())->findAll();
-        $form = $this->createForm(ParametersType::class, $parameters);
+        $form = $this->createForm(ParametersType::class, $this->parameterManager->getAll());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $params = $form->getData();
-            $om = $this->getDoctrine()->getManager();
-            foreach ($params as $param) {
-                $om->persist($param);
+            foreach ($params as $path => $value) {
+                $this->parameterManager->set($path, $value);
             }
-            $om->flush();
+            $this->parameterManager->save();
 
             return $this->redirectToRoute('sherlockode_configuration.parameters');
         }

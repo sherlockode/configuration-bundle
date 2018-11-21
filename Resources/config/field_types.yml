@@ -11,3 +11,7 @@ services:
         class: Sherlockode\ConfigurationBundle\FieldType\UrlField
         tags:
             - {name: sherlockode_configuration.field }
+    sherlockode_configuration.field.datetime:
+        class: Sherlockode\ConfigurationBundle\FieldType\DateTimeField
+        tags:
+            - {name: sherlockode_configuration.field }
