@@ -4,7 +4,7 @@ namespace Sherlockode\ConfigurationBundle\Manager;
 
 use Sherlockode\ConfigurationBundle\FieldType\FieldTypeInterface;
 
-class FieldTypeManager
+class FieldTypeManager implements FieldTypeManagerInterface
 {
     /**
      * @var FieldTypeInterface[]
