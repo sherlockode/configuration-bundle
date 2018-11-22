@@ -2,8 +2,8 @@
 
 namespace Sherlockode\ConfigurationBundle\Form\Type;
 
-use Sherlockode\ConfigurationBundle\Manager\FieldTypeManager;
-use Sherlockode\ConfigurationBundle\Manager\ParameterManager;
+use Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface;
+use Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -13,24 +13,24 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ParametersType extends AbstractType
 {
     /**
-     * @var ParameterManager
+     * @var ConfigurationManagerInterface
      */
-    private $parameterManager;
+    private $configurationManager;
 
     /**
-     * @var FieldTypeManager
+     * @var FieldTypeManagerInterface
      */
     private $fieldTypeManager;
 
-    public function __construct(ParameterManager $parameterManager, FieldTypeManager $fieldTypeManager)
+    public function __construct(ConfigurationManagerInterface $configurationManager, FieldTypeManagerInterface $fieldTypeManager)
     {
         $this->fieldTypeManager = $fieldTypeManager;
-        $this->parameterManager = $parameterManager;
+        $this->configurationManager = $configurationManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->parameterManager->getConfiguration() as $path => $config) {
+        foreach ($this->configurationManager->getDefinedParameters() as $path => $config) {
             $formConfig = $this->getFormConfiguration($config['type']);
 
             $baseOptions = [

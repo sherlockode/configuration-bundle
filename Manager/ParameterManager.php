@@ -8,7 +8,7 @@ use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 /**
  * Class ParameterManager
  */
-class ParameterManager
+class ParameterManager implements ParameterManagerInterface, ConfigurationManagerInterface
 {
     /**
      * @var ObjectManager
@@ -56,19 +56,19 @@ class ParameterManager
     private $config;
 
     /**
-     * @var FieldTypeManager
+     * @var FieldTypeManagerInterface
      */
     private $fieldTypeManager;
 
     /**
      * ParameterManager constructor.
      *
-     * @param ObjectManager    $om
-     * @param string           $class
-     * @param array            $config
-     * @param FieldTypeManager $fieldTypeManager
+     * @param ObjectManager             $om
+     * @param string                    $class
+     * @param array                     $config
+     * @param FieldTypeManagerInterface $fieldTypeManager
      */
-    public function __construct(ObjectManager $om, $class, $config, FieldTypeManager $fieldTypeManager)
+    public function __construct(ObjectManager $om, $class, $config, FieldTypeManagerInterface $fieldTypeManager)
     {
         $this->om = $om;
         $this->class = $class;
@@ -210,7 +210,7 @@ class ParameterManager
     /**
      * @return array
      */
-    public function getConfiguration()
+    public function getDefinedParameters()
     {
         return $this->config;
     }

@@ -22,5 +22,8 @@ services:
         tags:
             - {name: form.type }
 
+    sherlockode_configuration.configuration_manager: '@sherlockode_configuration.parameter_manager'
     Sherlockode\ConfigurationBundle\Manager\ParameterManager: '@sherlockode_configuration.parameter_manager'
-    Sherlockode\ConfigurationBundle\Manager\FieldTypeManager: '@sherlockode_configuration.field_manager'
+    Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface: '@sherlockode_configuration.parameter_manager'
+    Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface: '@sherlockode_configuration.configuration_manager'
+    Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface: '@sherlockode_configuration.field_manager'
