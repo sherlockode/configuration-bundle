@@ -5,24 +5,27 @@ services:
         arguments:
             - '@sherlockode_configuration.parameter_manager'
 
+    sherlockode_configuration.configuration_manager:
+        class: Sherlockode\ConfigurationBundle\Manager\ConfigurationManager
+        arguments:
+            - '%sherlockode_configuration.parameters%'
     sherlockode_configuration.parameter_manager:
         class: Sherlockode\ConfigurationBundle\Manager\ParameterManager
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%sherlockode_configuration.parameter_class%'
-            - '%sherlockode_configuration.parameters%'
+            - '@sherlockode_configuration.configuration_manager'
             - '@sherlockode_configuration.field_manager'
     sherlockode_configuration.field_manager:
         class: Sherlockode\ConfigurationBundle\Manager\FieldTypeManager
     sherlockode_configuration.form.parameters:
         class: Sherlockode\ConfigurationBundle\Form\Type\ParametersType
         arguments:
-            - '@sherlockode_configuration.parameter_manager'
+            - '@sherlockode_configuration.configuration_manager'
             - '@sherlockode_configuration.field_manager'
         tags:
             - {name: form.type }
 
-    sherlockode_configuration.configuration_manager: '@sherlockode_configuration.parameter_manager'
     Sherlockode\ConfigurationBundle\Manager\ParameterManager: '@sherlockode_configuration.parameter_manager'
     Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface: '@sherlockode_configuration.parameter_manager'
     Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface: '@sherlockode_configuration.configuration_manager'
