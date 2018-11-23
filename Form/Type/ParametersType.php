@@ -30,17 +30,17 @@ class ParametersType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->configurationManager->getDefinedParameters() as $path => $config) {
-            $formConfig = $this->getFormConfiguration($config['type']);
+        foreach ($this->configurationManager->getDefinedParameters() as $definition) {
+            $formConfig = $this->getFormConfiguration($definition->getType());
 
             $baseOptions = [
-                'label' => $config['label'],
+                'label' => $definition->getLabel(),
                 'translation_domain' => false,
             ];
             $childOptions = array_merge($baseOptions, $formConfig['options']);
 
             $builder
-                ->add($path, $formConfig['type'], $childOptions)
+                ->add($definition->getPath(), $formConfig['type'], $childOptions)
             ;
         }
     }

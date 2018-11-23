@@ -8,7 +8,7 @@ use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 /**
  * Class ParameterManager
  */
-class ParameterManager implements ParameterManagerInterface, ConfigurationManagerInterface
+class ParameterManager implements ParameterManagerInterface
 {
     /**
      * @var ObjectManager
@@ -51,9 +51,9 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
     private $loaded;
 
     /**
-     * @var array
+     * @var ConfigurationManagerInterface[]
      */
-    private $config;
+    private $configurationManager;
 
     /**
      * @var FieldTypeManagerInterface
@@ -63,17 +63,18 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
     /**
      * ParameterManager constructor.
      *
-     * @param ObjectManager             $om
-     * @param string                    $class
-     * @param array                     $config
-     * @param FieldTypeManagerInterface $fieldTypeManager
+     * @param ObjectManager                 $om
+     * @param string                        $class
+     * @param ConfigurationManagerInterface $configurationManager
+     * @param FieldTypeManagerInterface     $fieldTypeManager
      */
-    public function __construct(ObjectManager $om, $class, $config, FieldTypeManagerInterface $fieldTypeManager)
+    public function __construct(ObjectManager $om, $class, ConfigurationManagerInterface $configurationManager, FieldTypeManagerInterface $fieldTypeManager)
     {
         $this->om = $om;
         $this->class = $class;
-        $this->config = $config;
+        $this->configurationManager = $configurationManager;
         $this->parameters = [];
+        $this->newParameters = [];
         $this->data = [];
         $this->loaded = false;
         $this->fieldTypeManager = $fieldTypeManager;
@@ -126,7 +127,7 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
      */
     public function set($path, $value)
     {
-        if (!isset($this->config[$path])) {
+        if (!$this->configurationManager->has($path)) {
             return $this;
         }
         if (!isset($this->parameters[$path])) {
@@ -161,7 +162,7 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
         $parameters = $this->om->getRepository($this->class)->findAll();
         /** @var ParameterInterface $parameter */
         foreach ($parameters as $parameter) {
-            if (!isset($this->config[$parameter->getPath()])) {
+            if (!$this->configurationManager->has($parameter->getPath())) {
                 continue;
             }
             $this->parameters[$parameter->getPath()] = $parameter;
@@ -179,8 +180,8 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
      */
     private function getStringValue($path, $value)
     {
-        $parameterConfig = $this->config[$path];
-        $fieldType = $this->fieldTypeManager->getField($parameterConfig['type']);
+        $parameterConfig = $this->configurationManager->get($path);
+        $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
 
         if ($fieldType->getModelTransformer()) {
             $value = $fieldType->getModelTransformer()->reverseTransform($value);
@@ -197,21 +198,13 @@ class ParameterManager implements ParameterManagerInterface, ConfigurationManage
      */
     private function getUserValue($path, $value)
     {
-        $parameterConfig = $this->config[$path];
-        $fieldType = $this->fieldTypeManager->getField($parameterConfig['type']);
+        $parameterDefinition = $this->configurationManager->get($path);
+        $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
 
         if ($fieldType->getModelTransformer()) {
             $value = $fieldType->getModelTransformer()->transform($value);
         }
 
         return $value;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDefinedParameters()
-    {
-        return $this->config;
     }
 }
