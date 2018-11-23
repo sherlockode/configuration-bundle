@@ -127,6 +127,9 @@ class ParameterManager implements ParameterManagerInterface
      */
     public function set($path, $value)
     {
+        if (false === $this->loaded) {
+            $this->loadParameters();
+        }
         if (!$this->configurationManager->has($path)) {
             return $this;
         }

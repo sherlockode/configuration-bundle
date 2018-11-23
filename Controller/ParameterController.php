@@ -3,7 +3,7 @@
 namespace Sherlockode\ConfigurationBundle\Controller;
 
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
-use Sherlockode\ConfigurationBundle\Manager\ParameterManager;
+use Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 class ParameterController extends Controller
 {
     /**
-     * @var ParameterManager
+     * @var ParameterManagerInterface
      */
     private $parameterManager;
 
     /**
      * ParameterController constructor.
      *
-     * @param ParameterManager $parameterManager
+     * @param ParameterManagerInterface $parameterManager
      */
     public function __construct($parameterManager)
     {
