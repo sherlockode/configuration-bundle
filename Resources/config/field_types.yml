@@ -15,3 +15,7 @@ services:
         class: Sherlockode\ConfigurationBundle\FieldType\DateTimeField
         tags:
             - {name: sherlockode_configuration.field }
+    sherlockode_configuration.field.choice:
+        class: Sherlockode\ConfigurationBundle\FieldType\ChoiceField
+        tags:
+            - {name: sherlockode_configuration.field }

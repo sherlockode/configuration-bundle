@@ -14,11 +14,6 @@ class UrlField extends AbstractField implements FieldTypeInterface
         return UrlType::class;
     }
 
-    public function getFormOptions()
-    {
-        return [];
-    }
-
     public function getName()
     {
         return 'url';

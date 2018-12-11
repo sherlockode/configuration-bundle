@@ -14,11 +14,6 @@ class TextareaField extends AbstractField implements FieldTypeInterface
         return TextareaType::class;
     }
 
-    public function getFormOptions()
-    {
-        return [];
-    }
-
     public function getName()
     {
         return 'textarea';

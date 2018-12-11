@@ -16,11 +16,6 @@ class DateTimeField extends AbstractField implements FieldTypeInterface
         return DateTimeType::class;
     }
 
-    public function getFormOptions()
-    {
-        return [];
-    }
-
     public function getName()
     {
         return 'datetime';

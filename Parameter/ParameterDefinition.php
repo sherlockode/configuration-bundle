@@ -19,6 +19,11 @@ class ParameterDefinition
      */
     private $label;
 
+    /**
+     * @var array
+     */
+    private $options;
+
     public function __construct($path, $type, array $config = [])
     {
         $this->path = $path;
@@ -44,5 +49,36 @@ class ParameterDefinition
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param string $optionName
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getOption($optionName, $default = null)
+    {
+        if (!isset($this->options[$optionName])) {
+            return $default;
+        }
+
+        return $this->options[$optionName];
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
     }
 }
