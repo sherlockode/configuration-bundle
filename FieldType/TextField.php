@@ -14,11 +14,6 @@ class TextField extends AbstractField implements FieldTypeInterface
         return TextType::class;
     }
 
-    public function getFormOptions()
-    {
-        return [];
-    }
-
     public function getName()
     {
         return 'text';

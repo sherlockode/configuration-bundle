@@ -4,6 +4,7 @@ namespace Sherlockode\ConfigurationBundle\Form\Type;
 
 use Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface;
 use Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface;
+use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -31,7 +32,7 @@ class ParametersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->configurationManager->getDefinedParameters() as $definition) {
-            $formConfig = $this->getFormConfiguration($definition->getType());
+            $formConfig = $this->getFormConfiguration($definition);
 
             $baseOptions = [
                 'label' => $definition->getLabel(),
@@ -46,17 +47,17 @@ class ParametersType extends AbstractType
     }
 
     /**
-     * @param string $type
+     * @param ParameterDefinition $definition
      *
      * @return array
      */
-    private function getFormConfiguration($type)
+    private function getFormConfiguration($definition)
     {
-        $field = $this->fieldTypeManager->getField($type);
+        $field = $this->fieldTypeManager->getField($definition->getType());
 
         return [
             'type' => $field->getFormType(),
-            'options' => $field->getFormOptions(),
+            'options' => $field->getFormOptions($definition),
         ];
     }
 }

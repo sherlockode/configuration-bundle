@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('label')->isRequired()->end()
                             ->scalarNode('type')->isRequired()->end()
+                            ->variableNode('options')->end()
                         ->end()
                     ->end()
                 ->end()
