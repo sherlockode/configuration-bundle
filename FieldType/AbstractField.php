@@ -18,9 +18,11 @@ abstract class AbstractField implements FieldTypeInterface
     }
 
     /**
+     * @param ParameterDefinition $definition
+     *
      * @return TransformerInterface
      */
-    public function getModelTransformer()
+    public function getModelTransformer(ParameterDefinition $definition)
     {
         return null;
     }
