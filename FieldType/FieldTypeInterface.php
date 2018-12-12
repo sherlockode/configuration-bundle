@@ -25,7 +25,9 @@ interface FieldTypeInterface
     public function getName();
 
     /**
+     * @param ParameterDefinition $definition
+     *
      * @return TransformerInterface
      */
-    public function getModelTransformer();
+    public function getModelTransformer(ParameterDefinition $definition);
 }

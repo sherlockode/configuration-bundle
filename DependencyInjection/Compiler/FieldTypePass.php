@@ -10,6 +10,10 @@ class FieldTypePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (!class_exists('Doctrine\\ORM\\EntityManager')) {
+            $container->removeDefinition('sherlockode_configuration.field.entity');
+        }
+
         $definition = $container->findDefinition('sherlockode_configuration.field_manager');
         $taggedServices = $container->findTaggedServiceIds('sherlockode_configuration.field');
 

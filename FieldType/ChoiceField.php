@@ -7,7 +7,7 @@ use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
 use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class ChoiceField extends AbstractField implements FieldTypeInterface
+class ChoiceField extends AbstractField
 {
     /**
      * @return string
@@ -31,9 +31,11 @@ class ChoiceField extends AbstractField implements FieldTypeInterface
     }
 
     /**
+     * @param ParameterDefinition $definition
+     *
      * @return TransformerInterface
      */
-    public function getModelTransformer()
+    public function getModelTransformer(ParameterDefinition $definition)
     {
         return new CallbackTransformer(
             function ($data) {

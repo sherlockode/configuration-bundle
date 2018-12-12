@@ -186,8 +186,8 @@ class ParameterManager implements ParameterManagerInterface
         $parameterConfig = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
 
-        if ($fieldType->getModelTransformer()) {
-            $value = $fieldType->getModelTransformer()->reverseTransform($value);
+        if ($transformer = $fieldType->getModelTransformer($parameterConfig)) {
+            $value = $transformer->reverseTransform($value);
         }
 
         return $value;
@@ -204,8 +204,8 @@ class ParameterManager implements ParameterManagerInterface
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
 
-        if ($fieldType->getModelTransformer()) {
-            $value = $fieldType->getModelTransformer()->transform($value);
+        if ($transformer = $fieldType->getModelTransformer($parameterDefinition)) {
+            $value = $transformer->transform($value);
         }
 
         return $value;

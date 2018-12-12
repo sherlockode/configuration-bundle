@@ -2,11 +2,12 @@
 
 namespace Sherlockode\ConfigurationBundle\FieldType;
 
+use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
 use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class DateTimeField extends AbstractField implements FieldTypeInterface
+class DateTimeField extends AbstractField
 {
     /**
      * @return string
@@ -22,9 +23,11 @@ class DateTimeField extends AbstractField implements FieldTypeInterface
     }
 
     /**
+     * @param ParameterDefinition $definition
+     *
      * @return TransformerInterface
      */
-    public function getModelTransformer()
+    public function getModelTransformer(ParameterDefinition $definition)
     {
         return new CallbackTransformer(
             function ($data) {

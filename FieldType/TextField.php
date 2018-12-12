@@ -4,7 +4,7 @@ namespace Sherlockode\ConfigurationBundle\FieldType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class TextField extends AbstractField implements FieldTypeInterface
+class TextField extends AbstractField
 {
     /**
      * @return string
