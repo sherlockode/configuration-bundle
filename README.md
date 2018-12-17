@@ -63,7 +63,7 @@ class Parameter extends BaseParameter
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string")
+     * @ORM\Column(name="value", type="string", nullable=true)
      */
     protected $value;
 }
@@ -91,6 +91,11 @@ sherlockode_configuration:
         max_user_login_attempts:
             label: Max login attemps before account blocking
             type: text
+        sales_date:
+            label: Sales start date
+            type: datetime
+            options:
+                required: false
 ```
 
 ## Usage
