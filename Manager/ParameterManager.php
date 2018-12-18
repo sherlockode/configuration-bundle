@@ -112,8 +112,8 @@ class ParameterManager implements ParameterManagerInterface
             $this->loadParameters();
         }
 
-        if (isset($this->parameters[$path])) {
-            return $this->parameters[$path];
+        if (isset($this->data[$path])) {
+            return $this->data[$path];
         }
 
         return $default;
@@ -140,7 +140,9 @@ class ParameterManager implements ParameterManagerInterface
             $this->parameters[$path] = $parameter;
             $this->newParameters[] = $parameter;
         }
-        $this->parameters[$path]->setValue($this->getStringValue($path, $value));
+        $stringValue = $this->getStringValue($path, $value);
+        $this->parameters[$path]->setValue($stringValue);
+        $this->data[$path] = $this->getUserValue($path, $stringValue);
 
         return $this;
     }
