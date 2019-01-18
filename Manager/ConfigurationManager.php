@@ -63,7 +63,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
     {
         $result = [];
         foreach ($config as $path => $data) {
-            $definition = new ParameterDefinition($path, $data['type'], ['label' => $data['label']]);
+            $definition->setTranslationDomain($data['translation_domain']);
             if (isset($data['options']) && is_array($data['options'])) {
                 $definition->setOptions($data['options']);
             }
