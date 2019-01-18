@@ -20,6 +20,11 @@ class ParameterDefinition
     private $label;
 
     /**
+     * @var string
+     */
+    private $translationDomain;
+
+    /**
      * @var array
      */
     private $options;
@@ -49,6 +54,23 @@ class ParameterDefinition
     public function getType()
     {
         return $this->type;
+    }
+
+    public function getTranslationDomain()
+    {
+        return $this->translationDomain;
+    }
+
+    /**
+     * @param string $translationDomain
+     *
+     * @return $this
+     */
+    public function setTranslationDomain($translationDomain)
+    {
+        $this->translationDomain = $translationDomain;
+
+        return $this;
     }
 
     /**

@@ -37,7 +37,7 @@ class ParametersType extends AbstractType
             $baseOptions = [
                 'label' => $definition->getLabel(),
                 'required' => $definition->getOption('required', true),
-                'translation_domain' => false,
+                'translation_domain' => $definition->getTranslationDomain(),
             ];
             $childOptions = array_merge($baseOptions, $formConfig['options']);
 
