@@ -2,6 +2,7 @@
 
 namespace Sherlockode\ConfigurationBundle\DependencyInjection;
 
+use Sherlockode\ConfigurationBundle\FieldType\FieldTypeInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -23,5 +24,10 @@ class SherlockodeConfigurationExtension extends Extension
         $loader = new YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
         $loader->load('field_types.yml');
+
+        if (method_exists($container, 'registerForAutoconfiguration')) {
+            $container->registerForAutoconfiguration(FieldTypeInterface::class)
+                ->addTag('sherlockode_configuration.field');
+        }
     }
 }
