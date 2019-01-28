@@ -9,10 +9,15 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $root = $builder->root('sherlockode_configuration');
+        $treeBuilder = new TreeBuilder('sherlockode_configuration');
 
-        $root
+        if (!method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->root('sherlockode_configuration');
+        } else {
+            $rootNode = $treeBuilder->getRootNode();
+        }
+
+        $rootNode
             ->fixXmlConfig('parameter')
             ->children()
                 ->arrayNode('entity_class')
@@ -44,6 +49,6 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        return $builder;
+        return $treeBuilder;
     }
 }
