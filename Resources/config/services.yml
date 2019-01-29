@@ -4,6 +4,7 @@ services:
         public: true
         arguments:
             - '@sherlockode_configuration.parameter_manager'
+            - '%sherlockode_configuration.templates.edit_form%'
 
     sherlockode_configuration.configuration_manager:
         class: Sherlockode\ConfigurationBundle\Manager\ConfigurationManager
