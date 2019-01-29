@@ -4,14 +4,14 @@ namespace Sherlockode\ConfigurationBundle\Controller;
 
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
 use Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ParameterController
  */
-class ParameterController extends Controller
+class ParameterController extends AbstractController
 {
     /**
      * @var ParameterManagerInterface
@@ -19,13 +19,20 @@ class ParameterController extends Controller
     private $parameterManager;
 
     /**
+     * @var string
+     */
+    private $editFormTemplate;
+
+    /**
      * ParameterController constructor.
      *
      * @param ParameterManagerInterface $parameterManager
+     * @param string                    $editFormTemplate
      */
-    public function __construct($parameterManager)
+    public function __construct($parameterManager, $editFormTemplate)
     {
         $this->parameterManager = $parameterManager;
+        $this->editFormTemplate = $editFormTemplate;
     }
 
     /**
@@ -49,7 +56,7 @@ class ParameterController extends Controller
         }
 
 
-        return $this->render($this->getParameter('sherlockode_configuration.templates.edit_form'), [
+        return $this->render($this->editFormTemplate, [
             'form' => $form->createView(),
         ]);
     }
