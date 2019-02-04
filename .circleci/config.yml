@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1
+    environment:
+      SYMFONY_DEPRECATIONS_HELPER: disabled
+      APP_ENV: test
+    steps:
+      - checkout
+      - run: composer install --no-scripts
+      - run: php ./vendor/bin/phpunit
