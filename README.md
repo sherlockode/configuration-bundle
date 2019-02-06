@@ -46,7 +46,6 @@ use Sherlockode\ConfigurationBundle\Model\Parameter as BaseParameter;
 class Parameter extends BaseParameter
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -54,16 +53,12 @@ class Parameter extends BaseParameter
     protected $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="path", type="string")
      */
     protected $path;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="string", nullable=true)
+     * @ORM\Column(name="value", type="text", nullable=true)
      */
     protected $value;
 }
@@ -79,7 +74,7 @@ sherlockode_configuration:
         parameter: App\Entity\Parameter
 ```
 
-Now you are free to define any configuration entry you'd like by using the "parameters" key:
+Now you are free to define any configuration entry you'd like by using the `parameters` key:
 ```yaml
 sherlockode_configuration:
     entity_class:
@@ -96,6 +91,43 @@ sherlockode_configuration:
             type: datetime
             options:
                 required: false
+```
+
+### Translations
+
+By default parameters labels are not translated in the form provided by the bundle.
+If you want to use translations you can define a `translation_domain` key for each parameter
+and use your translation key as the label.
+
+```yaml
+sherlockode_configuration:
+    parameters:
+        contact_email:
+            label: customer.contact_email
+            type: text
+            translation_domain: my_app
+```
+
+### Options
+
+Each type of field may accept a various range of options that can be defined under the `options` key.
+
+Every field may have a `required` option to define if the input field will be required (it defaults to true).
+The other options are up to the field and its needs. For instance, the choice field allow to define
+`multiple` and `choices` options in order to customize the form.
+
+```yaml
+sherlockode_configuration:
+    parameters:
+        guess_access:
+            label: Allow guest access
+            type: choice
+            options:
+                required: true
+                multiple: true
+                choices:
+                    yes: 1
+                    no: 0
 ```
 
 ## Usage
@@ -136,7 +168,63 @@ $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 
 ## Field types
 
-Out of the box, the bundle provides several field types located in the namespace Sherlockode\ConfigurationBundle\FieldType.
-The `getName()` method is the alias to use in your configuration (like `text` or `textarea`).
+### Default types
 
-In order to add custom field types, you should create a service implementing the FieldTypeInterface interface and tag it with `sherlockode_configuration.field`.
+Here are the field types provided in the bundle, located in the namespace `Sherlockode\ConfigurationBundle\FieldType` :
+
+* choice
+* datetime
+* entity
+* textarea
+* text
+* url
+
+### Custom Field types
+
+In order to add custom field types, you should create a service implementing the `FieldTypeInterface` interface
+and tag it with `sherlockode_configuration.field` (or use autoconfiguration).
+
+The `getName()` return value is the alias of the field type to use in the configuration (like `text` or `textarea`).
+
+### Using transformers
+
+Due to the format of the Parameter entity in the database (the value is stored as a string, whatever the parameter type),
+complex values cannot be stored directly.
+For instance, we can serialize an array to fit the string type, or we may store the ID of a database entity.
+The process may vary depending on your needs and the value to store, but the application needs to be aware of the process
+to transform the PHP data into a string and the opposite process. This is done through transformers.
+
+A transformer is an object implementing the `Sherlockode\ConfigurationBundle\Transformer\TransformerInterface`.
+The interface has two methods `transform` and `reverseTransform`, similarly to the transformers used by Symfony in the Form Component.
+
+The `transform` method takes the string representation and returns the PHP value,
+when the `reverseTransform` takes your PHP value and returns back the corresponding scalar value.
+
+In order to be used, an instance of the transformer should be returned by the `getModelTransformer`
+method of the corresponding field type. If this method returns `null`, the bundle considers that no transformation is needed.
+
+The bundle also provides a `CallbackTransformer` that can be used for faster implementations.
+For instance handling an array can be done like this :
+
+```php
+public function getModelTransformer(ParameterDefinition $definition)
+{
+    return new CallbackTransformer(
+        function ($data) {
+            if (!$data) {
+                return null;
+            }
+            if (false !== ($unserialized = @unserialize($data))) {
+                return $unserialized;
+            }
+            return $data;
+        },
+        function ($data) {
+            if (is_array($data)) {
+                return serialize($data);
+            }
+            return $data;
+        }
+    );
+}
+```
