@@ -3,6 +3,9 @@ Sherlockode ConfigurationBundle
 
 This bundle gives ability to define userland configuration options, useful in admin panels.
 
+[![CircleCI](https://circleci.com/gh/sherlockode/configuration-bundle.svg?style=shield)](https://circleci.com/gh/sherlockode/configuration-bundle)
+[![Total Downloads](https://poser.pugx.org/sherlockode/configuration-bundle/downloads)](https://packagist.org/packages/sherlockode/configuration-bundle)
+[![Latest Stable Version](https://poser.pugx.org/sherlockode/configuration-bundle/v/stable)](https://packagist.org/packages/sherlockode/configuration-bundle)
 
 ## Installation
 
