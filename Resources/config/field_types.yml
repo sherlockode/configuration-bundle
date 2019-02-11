@@ -19,6 +19,10 @@ services:
         class: Sherlockode\ConfigurationBundle\FieldType\ChoiceField
         tags:
             - {name: sherlockode_configuration.field }
+    sherlockode_configuration.field.checkbox:
+        class: Sherlockode\ConfigurationBundle\FieldType\CheckboxField
+        tags:
+            - {name: sherlockode_configuration.field }
     sherlockode_configuration.field.entity:
         class: Sherlockode\ConfigurationBundle\FieldType\EntityField
         arguments:
