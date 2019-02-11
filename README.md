@@ -85,10 +85,13 @@ sherlockode_configuration:
     parameters:
         contact_email:
             label: My customer service contact email
-            type: text
+            type: simple # the "simple" type renders by default as a TextType form element
         max_user_login_attempts:
             label: Max login attemps before account blocking
-            type: text
+            type: simple
+            options:
+                # it is possible to customize the form type to use for a "simple" parameter type
+                subtype: Symfony\Component\Form\Extension\Core\Type\IntegerType
         sales_date:
             label: Sales start date
             type: datetime
@@ -175,19 +178,18 @@ $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 
 Here are the field types provided in the bundle, located in the namespace `Sherlockode\ConfigurationBundle\FieldType` :
 
+* simple
+* checkbox
 * choice
 * datetime
 * entity
-* textarea
-* text
-* url
 
 ### Custom Field types
 
 In order to add custom field types, you should create a service implementing the `FieldTypeInterface` interface
 and tag it with `sherlockode_configuration.field` (or use autoconfiguration).
 
-The `getName()` return value is the alias of the field type to use in the configuration (like `text` or `textarea`).
+The `getName()` return value is the alias of the field type to use in the configuration (like `simple` or `choice`).
 
 ### Using transformers
 

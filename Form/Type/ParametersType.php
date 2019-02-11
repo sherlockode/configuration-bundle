@@ -41,7 +41,7 @@ class ParametersType extends AbstractType
             $childOptions = array_merge($baseOptions, $field->getFormOptions($definition));
 
             $builder
-                ->add($definition->getPath(), $field->getFormType(), $childOptions)
+                ->add($definition->getPath(), $field->getFormType($definition), $childOptions)
             ;
         }
     }
