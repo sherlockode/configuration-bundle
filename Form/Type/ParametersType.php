@@ -4,7 +4,6 @@ namespace Sherlockode\ConfigurationBundle\Form\Type;
 
 use Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface;
 use Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface;
-use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -32,33 +31,18 @@ class ParametersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->configurationManager->getDefinedParameters() as $definition) {
-            $formConfig = $this->getFormConfiguration($definition);
+            $field = $this->fieldTypeManager->getField($definition->getType());
 
             $baseOptions = [
                 'label' => $definition->getLabel(),
                 'required' => $definition->getOption('required', true),
                 'translation_domain' => $definition->getTranslationDomain(),
             ];
-            $childOptions = array_merge($baseOptions, $formConfig['options']);
+            $childOptions = array_merge($baseOptions, $field->getFormOptions($definition));
 
             $builder
-                ->add($definition->getPath(), $formConfig['type'], $childOptions)
+                ->add($definition->getPath(), $field->getFormType(), $childOptions)
             ;
         }
-    }
-
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return array
-     */
-    private function getFormConfiguration($definition)
-    {
-        $field = $this->fieldTypeManager->getField($definition->getType());
-
-        return [
-            'type' => $field->getFormType(),
-            'options' => $field->getFormOptions($definition),
-        ];
     }
 }
