@@ -22,8 +22,8 @@ class FieldTypeManagerTest extends TestCase
         $fieldTypeManager->addFieldType($fieldTypeText);
         $fieldTypeManager->addFieldType($fieldTypeNumber);
 
-        $this->assertEquals($fieldTypeManager->getField('text'), $fieldTypeText);
-        $this->assertEquals($fieldTypeManager->getField('number'), $fieldTypeNumber);
+        $this->assertSame($fieldTypeManager->getField('text'), $fieldTypeText);
+        $this->assertSame($fieldTypeManager->getField('number'), $fieldTypeNumber);
 
         $this->expectExceptionMessage('Unknown parameter type "date"');
         $fieldTypeManager->getField('date');

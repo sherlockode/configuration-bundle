@@ -14,13 +14,17 @@ class ConfigurationManagerTest extends TestCase
             'path' => [
                 'type'  => 'string',
                 'label' => 'test',
-                'translation_domain' => false,
+                'translation_domain' => 'translation',
             ],
         ];
 
         $configurationManager = new ConfigurationManager($config);
-        $parameterDefinition = new ParameterDefinition('path', 'string', ['label' => 'test']);
+        $parameterDefinition = new ParameterDefinition('path', 'string');
+        $parameterDefinition->setLabel('test');
+        $parameterDefinition->setTranslationDomain('translation');
 
         $this->assertEquals($configurationManager->get('path'), $parameterDefinition);
+
+        $this->assertTrue(is_array($configurationManager->getDefinedParameters()));
     }
 }

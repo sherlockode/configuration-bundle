@@ -29,26 +29,46 @@ class ParameterDefinition
      */
     private $options;
 
-    public function __construct($path, $type, array $config = [])
+    /**
+     * ParameterDefinition constructor.
+     *
+     * @param string $path
+     * @param string $type
+     */
+    public function __construct($path, $type)
     {
         $this->path = $path;
         $this->type = $type;
 
-        if (isset($config['label'])) {
-            $this->label = $config['label'];
-        } else {
-            $this->label = $this->path;
-        }
+        $this->label = $this->path;
     }
 
+    /**
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * @return string
+     */
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @param string $label
+     *
+     * @return $this
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+
+        return $this;
     }
 
     public function getType()
@@ -56,6 +76,9 @@ class ParameterDefinition
         return $this->type;
     }
 
+    /**
+     * @return string
+     */
     public function getTranslationDomain()
     {
         return $this->translationDomain;
