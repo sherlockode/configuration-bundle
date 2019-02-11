@@ -1,6 +1,6 @@
 {
     "name": "sherlockode/configuration-bundle",
-    "description": "Symfony bundle for configuration purposes",
+    "description": "Symfony bundle for user-defined configuration values",
     "license": "MIT",
     "type": "symfony-bundle",
     "authors": [
