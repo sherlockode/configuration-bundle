@@ -10,7 +10,7 @@ interface FieldTypeInterface
     /**
      * @return string
      */
-    public function getFormType();
+    public function getFormType(ParameterDefinition $definition);
 
     /**
      * @param ParameterDefinition $definition

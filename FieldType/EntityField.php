@@ -25,7 +25,7 @@ class EntityField extends AbstractField
     /**
      * @return string
      */
-    public function getFormType()
+    public function getFormType(ParameterDefinition $definition)
     {
         return EntityType::class;
     }
