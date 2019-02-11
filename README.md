@@ -1,7 +1,14 @@
 Sherlockode ConfigurationBundle
 ===============================
 
-This bundle gives ability to define userland configuration options, useful in admin panels.
+This bundle is built to allow users to define configuration options, useful in admin panels.
+Get rid of the business logic variables in your `ENV` or `parameters.yml` file !
+
+Available features:
+
+* Define multiple configuration entries available for the users
+* Retrieve configuration values anywhere in your code for business logic
+* Use or create custom parameter types for a better user experience
 
 [![CircleCI](https://circleci.com/gh/sherlockode/configuration-bundle.svg?style=shield)](https://circleci.com/gh/sherlockode/configuration-bundle)
 [![Total Downloads](https://poser.pugx.org/sherlockode/configuration-bundle/downloads)](https://packagist.org/packages/sherlockode/configuration-bundle)
@@ -110,7 +117,7 @@ sherlockode_configuration:
     parameters:
         contact_email:
             label: customer.contact_email
-            type: text
+            type: simple
             translation_domain: my_app
 ```
 
@@ -138,15 +145,39 @@ sherlockode_configuration:
 
 ## Usage
 
-This bundles provides the ParametersType, a FormType dedicated to editing the parameters.
-The Model data for the form is an associative array of the paths and existing values.
-You can get the existing parameters from the DB using the `ParameterManager`:
+### Default controller
+
+All configured parameters can be edited with the provided controller.
+You may import the routing file in order to access it, the listing will be available at URI `/parameters`.
+
+```yaml
+# config/routing.yaml
+sherlockode_configuration:
+    resource: "@SherlockodeConfigurationBundle/Resources/config/routing.yml"
+```
+
+You can also modify the default template used by this controller with the `templates` configuration entry point:
+
+```yaml
+sherlockode_configuration:
+    templates:
+        edit_form: 'Parameter/my_parameter_list.html.twig'
+```
+
+### Custom code for the Form
+
+If you have more specific usages, you can build your own form using the `ParametersType`,
+a `FormType` dedicated to editing the parameters.
+The model data for the form is an associative array of the paths and existing values.
+You can get the existing parameters from the DB using the service `sherlockode_configuration.parameter_manager`:
 
 ```php
 <?php
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
+use Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface;
 
 // $parameterManager has been injected
+/** @var ParameterManagerInterface $parameterManager */
 $data = $parameterManager->getAll();
 // or using an associative array:
 // $data = ['contact_email' => 'me@example.com', 'max_user_login_attempts' => 5];
@@ -157,15 +188,17 @@ $form->handleRequest($request);
 if ($form->isSubmitted() && $form->isValid()) {
     $params = $form->getData();
     foreach ($params as $path => $value) {
-        $this->parameterManager->set($path, $value);
+        $parameterManager->set($path, $value);
     }
     $parameterManager->save();
 }
 //...
 ```
 
-You are now able to retrieve any configuration value by using the ParameterManager service.
-It is possible to provide a default value to return if the entry has not been set.
+### Access configuration values
+
+You are now able to retrieve any configuration value by using the `get` method from the parameter manager.
+It is possible to provide a default value to return if the entry has not been set yet.
 
 ```php
 $email = $parameterManager->get('contact_email');
@@ -233,3 +266,7 @@ public function getModelTransformer(ParameterDefinition $definition)
     );
 }
 ```
+
+## License
+
+This bundle is under the MIT license. Check the details in the [dedicated file](LICENSE)
