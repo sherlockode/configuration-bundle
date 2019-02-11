@@ -14,6 +14,7 @@ class ConfigurationManagerTest extends TestCase
             'path' => [
                 'type'  => 'string',
                 'label' => 'test',
+                'translation_domain' => false,
             ],
         ];
 
