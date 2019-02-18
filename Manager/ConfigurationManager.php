@@ -63,9 +63,16 @@ class ConfigurationManager implements ConfigurationManagerInterface
     {
         $result = [];
         foreach ($config as $path => $data) {
+            if (!isset($data['type'])) {
+                throw new \LogicException(sprintf('No type has been set for parameter "%s"', $path));
+            }
             $definition = new ParameterDefinition($path, $data['type']);
-            $definition->setLabel($data['label']);
-            $definition->setTranslationDomain($data['translation_domain']);
+            if (isset($data['label'])) {
+                $definition->setLabel($data['label']);
+            }
+            if (isset($data['translation_domain'])) {
+                $definition->setTranslationDomain($data['translation_domain']);
+            }
             if (isset($data['options']) && is_array($data['options'])) {
                 $definition->setOptions($data['options']);
             }
