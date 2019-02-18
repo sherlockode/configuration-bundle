@@ -3,7 +3,7 @@
 namespace Sherlockode\ConfigurationBundle\FieldType;
 
 use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
-use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
+use Sherlockode\ConfigurationBundle\Transformer\BooleanTransformer;
 use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
@@ -36,13 +36,6 @@ class CheckboxField extends AbstractField
      */
     public function getModelTransformer(ParameterDefinition $definition)
     {
-        return new CallbackTransformer(
-            function ($data) {
-                return (bool)$data;
-            },
-            function ($data) {
-                return $data ? 1 : 0;
-            }
-        );
+        return new BooleanTransformer();
     }
 }
