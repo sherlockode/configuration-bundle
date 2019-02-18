@@ -34,6 +34,7 @@ class EntityField extends AbstractField
     {
         return [
             'class' => $definition->getOption('class'),
+            'placeholder' => $definition->getOption('placeholder', null),
         ];
     }
 
