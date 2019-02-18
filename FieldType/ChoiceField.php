@@ -3,7 +3,7 @@
 namespace Sherlockode\ConfigurationBundle\FieldType;
 
 use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
-use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
+use Sherlockode\ConfigurationBundle\Transformer\ArrayTransformer;
 use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -37,24 +37,6 @@ class ChoiceField extends AbstractField
      */
     public function getModelTransformer(ParameterDefinition $definition)
     {
-        return new CallbackTransformer(
-            function ($data) {
-                if (!$data) {
-                    return null;
-                }
-                if (false !== ($unserialized = @unserialize($data))) {
-                    return $unserialized;
-                }
-
-                return $data;
-            },
-            function ($data) {
-                if (is_array($data)) {
-                    return serialize($data);
-                }
-
-                return $data;
-            }
-        );
+        return new ArrayTransformer();
     }
 }
