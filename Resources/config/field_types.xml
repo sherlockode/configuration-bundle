@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="sherlockode_configuration.field.simple" class="Sherlockode\ConfigurationBundle\FieldType\SimpleField">
+            <tag name="sherlockode_configuration.field"/>
+        </service>
+        <service id="sherlockode_configuration.field.datetime" class="Sherlockode\ConfigurationBundle\FieldType\DateTimeField">
+            <tag name="sherlockode_configuration.field"/>
+        </service>
+        <service id="sherlockode_configuration.field.choice" class="Sherlockode\ConfigurationBundle\FieldType\ChoiceField">
+            <tag name="sherlockode_configuration.field"/>
+        </service>
+        <service id="sherlockode_configuration.field.checkbox" class="Sherlockode\ConfigurationBundle\FieldType\CheckboxField">
+            <tag name="sherlockode_configuration.field"/>
+        </service>
+        <service id="sherlockode_configuration.field.entity" class="Sherlockode\ConfigurationBundle\FieldType\EntityField">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="sherlockode_configuration.field"/>
+        </service>
+    </services>
+</container>

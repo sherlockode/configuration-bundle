@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="sherlockode_configuration.controller.parameter" class="Sherlockode\ConfigurationBundle\Controller\ParameterController" public="true">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument>%sherlockode_configuration.templates.edit_form%</argument>
+        </service>
+
+        <service id="sherlockode_configuration.configuration_manager" class="Sherlockode\ConfigurationBundle\Manager\ConfigurationManager">
+            <argument>%sherlockode_configuration.parameters%</argument>
+        </service>
+
+        <service id="sherlockode_configuration.parameter_manager" class="Sherlockode\ConfigurationBundle\Manager\ParameterManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument>%sherlockode_configuration.parameter_class%</argument>
+            <argument type="service" id="sherlockode_configuration.configuration_manager"/>
+            <argument type="service" id="sherlockode_configuration.field_manager"/>
+        </service>
+
+        <service id="sherlockode_configuration.field_manager" class="Sherlockode\ConfigurationBundle\Manager\FieldTypeManager">
+        </service>
+
+        <service id="sherlockode_configuration.form.parameters" class="Sherlockode\ConfigurationBundle\Form\Type\ParametersType">
+            <argument type="service" id="sherlockode_configuration.configuration_manager"/>
+            <argument type="service" id="sherlockode_configuration.field_manager"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface" alias="sherlockode_configuration.parameter_manager"/>
+        <service id="Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface" alias="sherlockode_configuration.configuration_manager"/>
+        <service id="Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface" alias="sherlockode_configuration.field_manager"/>
+    </services>
+</container>

@@ -6,7 +6,7 @@ use Sherlockode\ConfigurationBundle\FieldType\FieldTypeInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class SherlockodeConfigurationExtension extends Extension
 {
@@ -21,9 +21,9 @@ class SherlockodeConfigurationExtension extends Extension
         $container->setParameter('sherlockode_configuration.templates.edit_form', $config['templates']['edit_form']);
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
-        $loader = new YamlFileLoader($container, $fileLocator);
-        $loader->load('services.yml');
-        $loader->load('field_types.yml');
+        $loader = new XmlFileLoader($container, $fileLocator);
+        $loader->load('services.xml');
+        $loader->load('field_types.xml');
 
         if (method_exists($container, 'registerForAutoconfiguration')) {
             $container->registerForAutoconfiguration(FieldTypeInterface::class)

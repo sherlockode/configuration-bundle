@@ -1,3 +1,0 @@
-sherlockode_configuration.parameters:
-    path: /parameter
-    defaults: { _controller: sherlockode_configuration.controller.parameter:listAction }
