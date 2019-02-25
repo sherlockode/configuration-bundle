@@ -153,7 +153,7 @@ You may import the routing file in order to access it, the listing will be avail
 ```yaml
 # config/routing.yaml
 sherlockode_configuration:
-    resource: "@SherlockodeConfigurationBundle/Resources/config/routing.yml"
+    resource: "@SherlockodeConfigurationBundle/Resources/config/routing.xml"
 ```
 
 You can also modify the default template used by this controller with the `templates` configuration entry point:
