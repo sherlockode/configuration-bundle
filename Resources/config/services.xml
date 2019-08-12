@@ -35,6 +35,11 @@
             <tag name="form.type"/>
         </service>
 
+        <service id="sherlockode_configuration.twig.parameter" class="Sherlockode\ConfigurationBundle\Twig\ParameterExtension">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <tag name="twig.extension"/>
+        </service>
+
         <service id="Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface" alias="sherlockode_configuration.parameter_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface" alias="sherlockode_configuration.configuration_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface" alias="sherlockode_configuration.field_manager"/>
