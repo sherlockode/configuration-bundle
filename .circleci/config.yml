@@ -11,10 +11,6 @@ common: &common
 
 
 jobs:
-  test56:
-    docker:
-      - image: circleci/php:5.6
-    <<: *common
   test71:
     docker:
       - image: circleci/php:7.1
@@ -31,7 +27,6 @@ workflows:
     version: 2
     build:
         jobs:
-            - test56
             - test71
             - test72
             - test73

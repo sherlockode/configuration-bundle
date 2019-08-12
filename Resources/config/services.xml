@@ -20,14 +20,24 @@
         <service id="sherlockode_configuration.field_manager" class="Sherlockode\ConfigurationBundle\Manager\FieldTypeManager">
         </service>
 
+        <service id="sherlockode_configuration.upload_manager" class="Sherlockode\ConfigurationBundle\Manager\UploadManager">
+            <argument/>
+            <argument/>
+        </service>
+
         <service id="sherlockode_configuration.form.parameters" class="Sherlockode\ConfigurationBundle\Form\Type\ParametersType">
             <argument type="service" id="sherlockode_configuration.configuration_manager"/>
             <argument type="service" id="sherlockode_configuration.field_manager"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="sherlockode_configuration.form.image" class="Sherlockode\ConfigurationBundle\Form\Type\ImageType">
+            <argument type="service" id="sherlockode_configuration.upload_manager"/>
             <tag name="form.type"/>
         </service>
 
         <service id="Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface" alias="sherlockode_configuration.parameter_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface" alias="sherlockode_configuration.configuration_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface" alias="sherlockode_configuration.field_manager"/>
+        <service id="Sherlockode\ConfigurationBundle\Manager\UploadManagerInterface" alias="sherlockode_configuration.upload_manager"/>
     </services>
 </container>
