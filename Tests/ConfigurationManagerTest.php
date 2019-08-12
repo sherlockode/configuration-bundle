@@ -14,6 +14,7 @@ class ConfigurationManagerTest extends TestCase
             'path' => [
                 'type'  => 'string',
                 'label' => 'test',
+                'options' => ['opt' => 'val'],
                 'translation_domain' => 'translation',
             ],
         ];
@@ -21,10 +22,28 @@ class ConfigurationManagerTest extends TestCase
         $configurationManager = new ConfigurationManager($config);
         $parameterDefinition = new ParameterDefinition('path', 'string');
         $parameterDefinition->setLabel('test');
+        $parameterDefinition->setOptions(['opt' => 'val']);
         $parameterDefinition->setTranslationDomain('translation');
 
-        $this->assertEquals($configurationManager->get('path'), $parameterDefinition);
-
+        $this->assertEquals($parameterDefinition, $configurationManager->get('path'));
+        $this->assertFalse($configurationManager->has('foo'));
         $this->assertTrue(is_array($configurationManager->getDefinedParameters()));
+
+        $this->expectException('Exception');
+        $configurationManager->get('foo');
+    }
+
+    public function testTypeMissing()
+    {
+        $config = [
+            'path' => [
+                'label' => 'test',
+                'options' => ['opt' => 'val'],
+                'translation_domain' => 'translation',
+            ],
+        ];
+
+        $this->expectException('LogicException');
+        new ConfigurationManager($config);
     }
 }
