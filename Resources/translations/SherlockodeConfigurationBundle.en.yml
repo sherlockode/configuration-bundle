@@ -1,2 +1,6 @@
 parameters: Parameters
 submit: Submit
+field_type:
+    image:
+        file: File
+        delete: Delete

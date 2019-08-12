@@ -1,0 +1,15 @@
+{% block config_image_widget %}
+    {{ form_row(form.file) }}
+
+    {% if source != '' %}
+        <div class="form-group">
+            <a href="{{ asset(source) }}">
+                <img src="{{ asset(source) }}" height="50px" alt="{{ form.vars.label|trans({}, form.vars.translation_domain) }}">
+            </a>
+        </div>
+    {% endif %}
+
+    <div {% if source == '' %}style="display: none;"{% endif %}>
+        {{ form_row(form.delete) }}
+    </div>
+{% endblock %}

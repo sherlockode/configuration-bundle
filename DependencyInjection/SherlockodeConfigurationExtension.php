@@ -25,9 +25,29 @@ class SherlockodeConfigurationExtension extends Extension
         $loader->load('services.xml');
         $loader->load('field_types.xml');
 
-        if (method_exists($container, 'registerForAutoconfiguration')) {
-            $container->registerForAutoconfiguration(FieldTypeInterface::class)
-                ->addTag('sherlockode_configuration.field');
+        $container->registerForAutoconfiguration(FieldTypeInterface::class)
+            ->addTag('sherlockode_configuration.field');
+
+        $targetDir = $config['upload']['directory'] ?? sys_get_temp_dir();
+        $webPath = $config['upload']['uri_prefix'] ?? '/';
+
+        $uploadManager = $container->getDefinition('sherlockode_configuration.upload_manager');
+        if ($uploadManager->getClass() == 'Sherlockode\\ConfigurationBundle\\Manager\\UploadManager') {
+            $uploadManager->setArguments([
+                $targetDir,
+                $webPath,
+            ]);
         }
+
+        $this->registerFormTheme($container);
+    }
+
+    private function registerFormTheme(ContainerBuilder $container): void
+    {
+        $resources = $container->hasParameter('twig.form.resources') ?
+            $container->getParameter('twig.form.resources') : [];
+
+        \array_unshift($resources, '@SherlockodeConfiguration/form.html.twig');
+        $container->setParameter('twig.form.resources', $resources);
     }
 }

@@ -1,2 +1,6 @@
 parameters: Paramètres
 submit: Valider
+field_type:
+    image:
+        file: Fichier
+        delete: Supprimer

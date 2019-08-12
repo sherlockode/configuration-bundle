@@ -17,5 +17,8 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <tag name="sherlockode_configuration.field"/>
         </service>
+        <service id="sherlockode_configuration.field.image" class="Sherlockode\ConfigurationBundle\FieldType\ImageField">
+            <tag name="sherlockode_configuration.field"/>
+        </service>
     </services>
 </container>
