@@ -46,7 +46,9 @@ class ImageType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use (&$filename) {
                 $data = $event->getData();
-                $filename = $data['src'];
+                if (isset($data['src'])) {
+                    $filename = $data['src'];
+                }
             }
         );
 
