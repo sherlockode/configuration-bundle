@@ -216,6 +216,7 @@ Here are the field types provided in the bundle, located in the namespace `Sherl
 * choice
 * datetime
 * entity
+* image
 
 ### Custom Field types
 
