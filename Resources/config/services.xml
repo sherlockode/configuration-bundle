@@ -4,6 +4,9 @@
         <service id="sherlockode_configuration.controller.parameter" class="Sherlockode\ConfigurationBundle\Controller\ParameterController" public="true">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
             <argument>%sherlockode_configuration.templates.edit_form%</argument>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
         </service>
 
         <service id="sherlockode_configuration.configuration_manager" class="Sherlockode\ConfigurationBundle\Manager\ConfigurationManager">
