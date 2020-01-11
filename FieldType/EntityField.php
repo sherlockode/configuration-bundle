@@ -2,7 +2,7 @@
 
 namespace Sherlockode\ConfigurationBundle\FieldType;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -10,16 +10,16 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class EntityField extends AbstractField
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $om;
+    private $em;
 
     /**
-     * @param ObjectManager $om
+     * @param EntityManagerInterface $em
      */
-    public function __construct(ObjectManager $om)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->om = $om;
+        $this->em = $em;
     }
 
     /**
@@ -51,12 +51,12 @@ class EntityField extends AbstractField
                 return null;
             }
 
-            return $this->om->getRepository($class)->find($data);
+            return $this->em->getRepository($class)->find($data);
         }, function ($data) use ($class) {
             if (!$data) {
                 return null;
             }
-            $metadata = $this->om->getClassMetadata($class);
+            $metadata = $this->em->getClassMetadata($class);
             $id = $metadata->getIdentifierValues($data);
 
             return reset($id);

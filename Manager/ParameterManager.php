@@ -2,7 +2,7 @@
 
 namespace Sherlockode\ConfigurationBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 
 /**
@@ -11,9 +11,9 @@ use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
 class ParameterManager implements ParameterManagerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $om;
+    private $em;
 
     /**
      * Class name of the parameter entity
@@ -63,14 +63,18 @@ class ParameterManager implements ParameterManagerInterface
     /**
      * ParameterManager constructor.
      *
-     * @param ObjectManager                 $om
+     * @param EntityManagerInterface        $em
      * @param string                        $class
      * @param ConfigurationManagerInterface $configurationManager
      * @param FieldTypeManagerInterface     $fieldTypeManager
      */
-    public function __construct(ObjectManager $om, $class, ConfigurationManagerInterface $configurationManager, FieldTypeManagerInterface $fieldTypeManager)
-    {
-        $this->om = $om;
+    public function __construct(
+        EntityManagerInterface $em,
+        $class,
+        ConfigurationManagerInterface $configurationManager,
+        FieldTypeManagerInterface $fieldTypeManager
+    ) {
+        $this->em = $em;
         $this->class = $class;
         $this->configurationManager = $configurationManager;
         $this->parameters = [];
@@ -153,9 +157,9 @@ class ParameterManager implements ParameterManagerInterface
     public function save()
     {
         foreach ($this->newParameters as $parameter) {
-            $this->om->persist($parameter);
+            $this->em->persist($parameter);
         }
-        $this->om->flush($this->parameters);
+        $this->em->flush($this->parameters);
     }
 
     /**
@@ -164,7 +168,7 @@ class ParameterManager implements ParameterManagerInterface
      */
     private function loadParameters()
     {
-        $parameters = $this->om->getRepository($this->class)->findAll();
+        $parameters = $this->em->getRepository($this->class)->findAll();
         /** @var ParameterInterface $parameter */
         foreach ($parameters as $parameter) {
             if (!$this->configurationManager->has($parameter->getPath())) {
