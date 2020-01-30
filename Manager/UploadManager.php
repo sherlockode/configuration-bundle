@@ -35,7 +35,7 @@ class UploadManager implements UploadManagerInterface
             return '';
         }
 
-        $filename = $this->getFilename($file);
+        $filename = $this->generateFilename($file);
         $file->move($this->targetDir, $filename);
 
         return $filename;
@@ -48,23 +48,33 @@ class UploadManager implements UploadManagerInterface
      */
     public function remove($filename)
     {
-        $filename = $this->targetDir . DIRECTORY_SEPARATOR . $filename;
+        $filepath = $this->getFilePath($filename);
 
-        if (!file_exists($filename)) {
+        if (!file_exists($filepath)) {
             return;
         }
 
-        unlink($filename);
+        unlink($filepath);
     }
 
     /**
-     * Get file name
+     * @param string $filename
+     *
+     * @return string
+     */
+    public function getFilePath($filename)
+    {
+        return $this->targetDir . DIRECTORY_SEPARATOR . $filename;
+    }
+
+    /**
+     * Generate the filename to store on disk
      *
      * @param UploadedFile $file
      *
      * @return string
      */
-    private function getFilename(UploadedFile $file)
+    private function generateFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
         $filename = str_replace('.' . $extension, '', $file->getClientOriginalName());
