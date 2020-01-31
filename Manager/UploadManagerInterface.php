@@ -24,4 +24,11 @@ interface UploadManagerInterface
      * @return string
      */
     public function resolveUri($filename);
+
+    /**
+     * @param string $filename
+     *
+     * @return string
+     */
+    public function getFilePath($filename);
 }
