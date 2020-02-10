@@ -18,6 +18,7 @@ class SherlockodeConfigurationExtension extends Extension
 
         $container->setParameter('sherlockode_configuration.parameter_class', $config['entity_class']['parameter']);
         $container->setParameter('sherlockode_configuration.parameters', $config['parameters']);
+        $container->setParameter('sherlockode_configuration.translation_domain', $config['translation_domain']);
         $container->setParameter('sherlockode_configuration.templates.edit_form', $config['templates']['edit_form']);
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');

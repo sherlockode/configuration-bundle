@@ -109,16 +109,21 @@ sherlockode_configuration:
 ### Translations
 
 By default parameters labels are not translated in the form provided by the bundle.
-If you want to use translations you can define a `translation_domain` key for each parameter
+If you want to use translations you can define a `translation_domain` key globally and/or for each parameter
 and use your translation key as the label.
 
 ```yaml
 sherlockode_configuration:
+    translation_domain: my_app_domain # default domain is false (no translation)
     parameters:
         contact_email:
             label: customer.contact_email
             type: simple
-            translation_domain: my_app
+            translation_domain: my_param_domain # overrides the global domain
+        sales_date:
+            # no translation domain, fallback to my_app_domain
+            label: sales.start_date
+            type: datetime
 ```
 
 ### Options
