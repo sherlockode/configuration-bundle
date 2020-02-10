@@ -12,11 +12,12 @@ class ConfigurationManager implements ConfigurationManagerInterface
     private $definitions;
 
     /**
-     * @param array $config
+     * @param array        $config
+     * @param string|false $translationDomain
      */
-    public function __construct($config = [])
+    public function __construct($config = [], $translationDomain = false)
     {
-        $this->definitions = $this->processConfiguration($config);
+        $this->definitions = $this->processConfiguration($config, $translationDomain);
     }
 
     /**
@@ -55,11 +56,12 @@ class ConfigurationManager implements ConfigurationManagerInterface
     }
 
     /**
-     * @param array $config
+     * @param array        $config
+     * @param string|false $translationDomain
      *
      * @return ParameterDefinition[]
      */
-    private function processConfiguration($config)
+    private function processConfiguration($config, $translationDomain = false)
     {
         $result = [];
         foreach ($config as $path => $data) {
@@ -70,9 +72,10 @@ class ConfigurationManager implements ConfigurationManagerInterface
             if (isset($data['label'])) {
                 $definition->setLabel($data['label']);
             }
-            if (isset($data['translation_domain'])) {
-                $definition->setTranslationDomain($data['translation_domain']);
+            if (!isset($data['translation_domain'])) {
+                $data['translation_domain'] = $translationDomain;
             }
+            $definition->setTranslationDomain($data['translation_domain']);
             if (isset($data['options']) && is_array($data['options'])) {
                 $definition->setOptions($data['options']);
             }

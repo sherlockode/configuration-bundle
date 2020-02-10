@@ -11,6 +11,7 @@
 
         <service id="sherlockode_configuration.configuration_manager" class="Sherlockode\ConfigurationBundle\Manager\ConfigurationManager">
             <argument>%sherlockode_configuration.parameters%</argument>
+            <argument>%sherlockode_configuration.translation_domain%</argument>
         </service>
 
         <service id="sherlockode_configuration.parameter_manager" class="Sherlockode\ConfigurationBundle\Manager\ParameterManager">

@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->fixXmlConfig('parameter')
             ->children()
+                ->scalarNode('translation_domain')->defaultFalse()->end()
                 ->arrayNode('entity_class')
                     ->isRequired()
                     ->children()
@@ -41,7 +42,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('label')->isRequired()->end()
                             ->scalarNode('type')->isRequired()->end()
-                            ->scalarNode('translation_domain')->defaultFalse()->end()
+                            ->scalarNode('translation_domain')->defaultNull()->end()
                             ->variableNode('options')->end()
                         ->end()
                     ->end()
