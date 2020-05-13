@@ -118,6 +118,11 @@ class ParameterManager implements ParameterManagerInterface
 
         if (isset($this->data[$path])) {
             return $this->data[$path];
+        } elseif (isset($this->parameters[$path])) {
+            // transform to user value only when the value is requested
+            $this->data[$path] = $this->getUserValue($path, $this->parameters[$path]->getValue());
+
+            return $this->data[$path];
         }
 
         return $default;
@@ -175,8 +180,6 @@ class ParameterManager implements ParameterManagerInterface
                 continue;
             }
             $this->parameters[$parameter->getPath()] = $parameter;
-
-            $this->data[$parameter->getPath()] = $this->getUserValue($parameter->getPath(), $parameter->getValue());
         }
         $this->loaded = true;
     }
