@@ -3,7 +3,6 @@
 namespace Sherlockode\ConfigurationBundle\Tests\Transformer;
 
 use PHPUnit\Framework\TestCase;
-use Sherlockode\ConfigurationBundle\Transformer\ArrayTransformer;
 use Sherlockode\ConfigurationBundle\Transformer\BooleanTransformer;
 
 class BooleanTransformerTest extends TestCase
