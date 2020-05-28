@@ -100,6 +100,12 @@ class ParameterManager implements ParameterManagerInterface
         if (false === $this->loaded) {
             $this->loadParameters();
         }
+        // check that every parameter has been transformed to its user value
+        foreach ($this->parameters as $path => $parameter) {
+            if (!isset($this->data[$path])) {
+                $this->data[$parameter->getPath()] = $this->getUserValue($parameter->getPath(), $parameter->getValue());
+            }
+        }
 
         return $this->data;
     }
