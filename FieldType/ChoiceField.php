@@ -38,6 +38,10 @@ class ChoiceField extends AbstractField
      */
     public function getModelTransformer(ParameterDefinition $definition)
     {
-        return new ArrayTransformer();
+        if ($definition->getOption('multiple', false)) {
+            return new ArrayTransformer();
+        }
+
+        return null;
     }
 }
