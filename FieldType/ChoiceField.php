@@ -22,6 +22,7 @@ class ChoiceField extends AbstractField
         return [
             'choices' => $definition->getOption('choices', []),
             'multiple' => $definition->getOption('multiple', false),
+            'expanded' => $definition->getOption('expanded', false),
             'placeholder' => $definition->getOption('placeholder', null),
         ];
     }
