@@ -32,10 +32,18 @@ class EntityField extends AbstractField
 
     public function getFormOptions(ParameterDefinition $definition)
     {
-        return [
+        $options = [
             'class' => $definition->getOption('class'),
             'placeholder' => $definition->getOption('placeholder', null),
         ];
+
+        $label = $definition->getOption('choice_label', null);
+        // only set the choice_label if defined to keep the Form native behavior
+        if ($label) {
+            $options['choice_label'] = $label;
+        }
+
+        return $options;
     }
 
     public function getName()
