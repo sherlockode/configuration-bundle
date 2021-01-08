@@ -35,6 +35,7 @@ class EntityField extends AbstractField
         $options = [
             'class' => $definition->getOption('class'),
             'placeholder' => $definition->getOption('placeholder', null),
+            'multiple' => $definition->getOption('multiple', null),
         ];
 
         $label = $definition->getOption('choice_label', null);
@@ -54,20 +55,42 @@ class EntityField extends AbstractField
     public function getModelTransformer(ParameterDefinition $definition)
     {
         $class = $definition->getOption('class');
-        return new CallbackTransformer(function ($data) use ($class) {
+        $multiple = $definition->getOption('multiple');
+
+        return new CallbackTransformer(function ($data) use ($class, $multiple) {
             if (!$data) {
                 return null;
             }
 
-            return $this->em->getRepository($class)->find($data);
-        }, function ($data) use ($class) {
+            if ($multiple) {
+                $data = explode(',', $data);
+                $metadata = $this->em->getClassMetadata($class);
+                $idField = $metadata->getSingleIdentifierFieldName();
+                $result = $this->em->getRepository($class)->findBy([$idField => $data]);
+            } else {
+                $result = $this->em->getRepository($class)->find($data);
+            }
+
+            return $result;
+        }, function ($data) use ($class, $multiple) {
             if (!$data) {
                 return null;
             }
             $metadata = $this->em->getClassMetadata($class);
-            $id = $metadata->getIdentifierValues($data);
 
-            return reset($id);
+            if ($multiple) {
+                $result = [];
+                foreach ($data as $entity) {
+                    $id = $metadata->getIdentifierValues($entity);
+                    $result[] = reset($id);
+                }
+                $result = implode(',', $result);
+            } else {
+                $id = $metadata->getIdentifierValues($data);
+                $result = reset($id);
+            }
+
+            return $result;
         });
     }
 }
