@@ -7,15 +7,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sherlockode_configuration');
-
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('sherlockode_configuration');
-        } else {
-            $rootNode = $treeBuilder->getRootNode();
-        }
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->fixXmlConfig('parameter')
