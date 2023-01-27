@@ -15,7 +15,6 @@ class SherlockodeConfigurationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-
         $container->setParameter('sherlockode_configuration.parameter_class', $config['entity_class']['parameter']);
         $container->setParameter('sherlockode_configuration.parameters', $config['parameters']);
         $container->setParameter('sherlockode_configuration.translation_domain', $config['translation_domain']);
@@ -41,6 +40,7 @@ class SherlockodeConfigurationExtension extends Extension
         }
 
         $this->registerFormTheme($container);
+        $this->registerExportParameters($container, $config['export']);
     }
 
     private function registerFormTheme(ContainerBuilder $container): void
@@ -50,5 +50,25 @@ class SherlockodeConfigurationExtension extends Extension
 
         \array_unshift($resources, '@SherlockodeConfiguration/form.html.twig');
         $container->setParameter('twig.form.resources', $resources);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    private function registerExportParameters(ContainerBuilder $container, array $config): void
+    {
+        $exportDir = rtrim($config['directory'], DIRECTORY_SEPARATOR);
+        $fileName = trim($config['file_name'], DIRECTORY_SEPARATOR);
+
+        if (0 !== strpos($exportDir, DIRECTORY_SEPARATOR)) {
+            $projectDir = rtrim($container->getParameter('kernel.project_dir'), DIRECTORY_SEPARATOR);
+            $exportDir = sprintf('%s/%s', $projectDir, $exportDir);
+        }
+
+        $container->setParameter(
+            'sherlockode_configuration.export.file_path',
+            sprintf('%s/%s', $exportDir, $fileName)
+        );
     }
 }

@@ -81,8 +81,10 @@ class EntityField extends AbstractField
             if ($multiple) {
                 $result = [];
                 foreach ($data as $entity) {
-                    $id = $metadata->getIdentifierValues($entity);
-                    $result[] = reset($id);
+                    if ($entity) {
+                        $id = $metadata->getIdentifierValues($entity);
+                        $result[] = reset($id);
+                    }
                 }
                 $result = implode(',', $result);
             } else {

@@ -273,6 +273,51 @@ public function getModelTransformer(ParameterDefinition $definition)
 }
 ```
 
+## Import or Export configuration
+
+Two commands can be used to import or export your parameters.
+
+### Export
+
+To export your parameters, you can run the following command:
+
+```shell
+$ php bin/console sherlockode:configuration:export
+```
+
+By default, the parameters will be exported in `var/configuration/configuration.yaml`, but you can also specify this path as a command parameter:
+
+```shell
+$ php bin/console sherlockode:configuration:export path/to/export/file.yaml
+```
+
+Due to sensitive information contained in the application parameters, remember to never commit this file.
+
+### Import
+
+To import your parameters from a source file, you can run the following command:
+
+```shell
+$ php bin/console sherlockode:configuration:import
+```
+
+In the same way as for the export, the import will be done by default from the `var/configuration/configuration.yaml` file, but you can specify a source file as an argument of the command:
+
+```shell
+$ php bin/console sherlockode:configuration:import path/to/source/file.yaml
+```
+
+### Path configuration
+
+You can also specify the default folder and file name for the import/export file via the bundle configuration:
+
+```yaml
+sherlockode_configuration:
+    export:
+        directory: path/to/export/directory
+        file_name: my_file.yaml
+```
+
 ## License
 
 This bundle is under the MIT license. Check the details in the [dedicated file](LICENSE)

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="sherlockode_configuration.import_command" class="Sherlockode\ConfigurationBundle\Command\ImportCommand">
+            <argument type="service" id="sherlockode_configuration.import_manager"/>
+            <tag name="console.command"/>
+        </service>
+
+        <service id="sherlockode_configuration.export_command" class="Sherlockode\ConfigurationBundle\Command\ExportCommand">
+            <argument type="service" id="sherlockode_configuration.export_manager"/>
+            <tag name="console.command"/>
+        </service>
+
         <service id="sherlockode_configuration.controller.parameter" class="Sherlockode\ConfigurationBundle\Controller\ParameterController" public="true">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
             <argument type="service" id="event_dispatcher"/>
@@ -8,6 +18,16 @@
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
+        </service>
+
+        <service id="sherlockode_configuration.import_manager" class="Sherlockode\ConfigurationBundle\Manager\ImportManager">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument>%sherlockode_configuration.export.file_path%</argument>
+        </service>
+
+        <service id="sherlockode_configuration.export_manager" class="Sherlockode\ConfigurationBundle\Manager\ExportManager">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument>%sherlockode_configuration.export.file_path%</argument>
         </service>
 
         <service id="sherlockode_configuration.configuration_manager" class="Sherlockode\ConfigurationBundle\Manager\ConfigurationManager">
