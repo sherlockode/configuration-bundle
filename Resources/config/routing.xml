@@ -3,4 +3,10 @@
     <route id="sherlockode_configuration.parameters" path="/parameter">
         <default key="_controller">sherlockode_configuration.controller.parameter:listAction</default>
     </route>
+    <route id="sherlockode_configuration.export" path="/parameters/export">
+        <default key="_controller">sherlockode_configuration.controller.parameter:exportAction</default>
+    </route>
+    <route id="sherlockode_configuration.import" path="/parameters/import">
+        <default key="_controller">sherlockode_configuration.controller.parameter:importAction</default>
+    </route>
 </routes>

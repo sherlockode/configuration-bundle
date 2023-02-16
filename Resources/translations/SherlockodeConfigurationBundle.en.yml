@@ -1,5 +1,8 @@
+an_error_occurred_during_import: An error occurred during import
+import_file: Import a file
 parameters: Parameters
 submit: Submit
+successfully_imported: Your file has been successfully imported
 field_type:
     image:
         file: File

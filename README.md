@@ -210,6 +210,20 @@ $email = $parameterManager->get('contact_email');
 $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 ```
 
+### Import / export from files
+
+You can export or import parameters in a yaml file. You have two routes for these operations:
+* `sherlockode_configuration.export`
+* `sherlockode_configuration.import`
+
+You also can customize the import form template by defining your own in the configuration:
+
+```yaml
+sherlockode_configuration:
+    templates:
+        import_form: 'Parameter/my_import_form.html.twig'
+```
+
 ## Field types
 
 ### Default types

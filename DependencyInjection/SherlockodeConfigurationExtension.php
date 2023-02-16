@@ -15,11 +15,12 @@ class SherlockodeConfigurationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-
         $container->setParameter('sherlockode_configuration.parameter_class', $config['entity_class']['parameter']);
         $container->setParameter('sherlockode_configuration.parameters', $config['parameters']);
         $container->setParameter('sherlockode_configuration.translation_domain', $config['translation_domain']);
         $container->setParameter('sherlockode_configuration.templates.edit_form', $config['templates']['edit_form']);
+        $container->setParameter('sherlockode_configuration.templates.import_form', $config['templates']['import_form']);
+        $container->setParameter('sherlockode_configuration.import.redirect_after', $config['import']['redirect_after']);
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
