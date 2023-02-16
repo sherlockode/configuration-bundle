@@ -3,8 +3,15 @@
     <services>
         <service id="sherlockode_configuration.controller.parameter" class="Sherlockode\ConfigurationBundle\Controller\ParameterController" public="true">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument type="service" id="sherlockode_configuration.export_manager"/>
+            <argument type="service" id="sherlockode_configuration.import_manager"/>
             <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="router"/>
             <argument>%sherlockode_configuration.templates.edit_form%</argument>
+            <argument>%sherlockode_configuration.templates.import_form%</argument>
+            <argument>%sherlockode_configuration.import.redirect_after%</argument>
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
@@ -30,6 +37,14 @@
             <argument/>
         </service>
 
+        <service id="sherlockode_configuration.export_manager" class="Sherlockode\ConfigurationBundle\Manager\ExportManager">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+        </service>
+
+        <service id="sherlockode_configuration.import_manager" class="Sherlockode\ConfigurationBundle\Manager\ImportManager">
+            <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+        </service>
+
         <service id="sherlockode_configuration.form.parameters" class="Sherlockode\ConfigurationBundle\Form\Type\ParametersType">
             <argument type="service" id="sherlockode_configuration.configuration_manager"/>
             <argument type="service" id="sherlockode_configuration.field_manager"/>
@@ -37,6 +52,9 @@
         </service>
         <service id="sherlockode_configuration.form.image" class="Sherlockode\ConfigurationBundle\Form\Type\ImageType">
             <argument type="service" id="sherlockode_configuration.upload_manager"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="sherlockode_configuration.form.import" class="Sherlockode\ConfigurationBundle\Form\Type\ImportType">
             <tag name="form.type"/>
         </service>
 

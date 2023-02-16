@@ -3,13 +3,20 @@
 namespace Sherlockode\ConfigurationBundle\Controller;
 
 use Sherlockode\ConfigurationBundle\Event\SaveEvent;
+use Sherlockode\ConfigurationBundle\Form\Type\ImportType;
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
+use Sherlockode\ConfigurationBundle\Manager\ExportManagerInterface;
+use Sherlockode\ConfigurationBundle\Manager\ImportManagerInterface;
 use Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class ParameterController
@@ -22,9 +29,24 @@ class ParameterController extends AbstractController
     private $parameterManager;
 
     /**
-     * @var string
+     * @var ExportManagerInterface
      */
-    private $editFormTemplate;
+    private $exportManager;
+
+    /**
+     * @var ImportManagerInterface
+     */
+    private $importManager;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
 
     /**
      * @var EventDispatcherInterface
@@ -32,17 +54,61 @@ class ParameterController extends AbstractController
     private $eventDispatcher;
 
     /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    /**
+     * @var string
+     */
+    private $editFormTemplate;
+
+    /**
+     * @var string
+     */
+    private $importFormTemplate;
+
+    /**
+     * @var string
+     */
+    private $redirectAfterImportRoute;
+
+    /**
      * ParameterController constructor.
      *
      * @param ParameterManagerInterface $parameterManager
+     * @param ExportManagerInterface    $exportManager
+     * @param ImportManagerInterface    $importManager
      * @param EventDispatcherInterface  $eventDispatcher
+     * @param RequestStack              $requestStack
+     * @param FormFactoryInterface      $formFactory
+     * @param UrlGeneratorInterface     $urlGenerator
      * @param string                    $editFormTemplate
+     * @param string                    $importFormTemplate
+     * @param string                    $redirectAfterImportRoute
      */
-    public function __construct(ParameterManagerInterface $parameterManager, EventDispatcherInterface $eventDispatcher, $editFormTemplate)
-    {
+    public function __construct(
+        ParameterManagerInterface $parameterManager,
+        ExportManagerInterface $exportManager,
+        ImportManagerInterface $importManager,
+        EventDispatcherInterface $eventDispatcher,
+        RequestStack $requestStack,
+        FormFactoryInterface $formFactory,
+        UrlGeneratorInterface $urlGenerator,
+        string $editFormTemplate,
+        string $importFormTemplate,
+        string $redirectAfterImportRoute
+    ) {
         $this->parameterManager = $parameterManager;
-        $this->editFormTemplate = $editFormTemplate;
+        $this->exportManager = $exportManager;
+        $this->importManager = $importManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->requestStack = $requestStack;
+        $this->formFactory = $formFactory;
+        $this->urlGenerator = $urlGenerator;
+        $this->editFormTemplate = $editFormTemplate;
+        $this->importFormTemplate = $importFormTemplate;
+        $this->redirectAfterImportRoute = $redirectAfterImportRoute;
     }
 
     /**
@@ -71,9 +137,48 @@ class ParameterController extends AbstractController
             return $this->redirectToRoute('sherlockode_configuration.parameters');
         }
 
-
         return $this->render($this->editFormTemplate, [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function exportAction(): Response
+    {
+        $response = new Response($this->exportManager->exportAsString());
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            'parameters.yaml'
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
+    }
+
+    /**
+     * @return Response
+     */
+    public function importAction(): Response
+    {
+        $form = $this->formFactory->create(ImportType::class, [], [
+            'action' => $this->urlGenerator->generate('sherlockode_configuration.import'),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($this->requestStack->getMainRequest());
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->importManager->import($form->get('file')->getData());
+                $this->addFlash('success', 'successfully_imported');
+            } catch (\Exception $exception) {
+                $this->addFlash('error', 'an_error_occurred_during_import');
+            }
+
+            return $this->redirectToRoute($this->redirectAfterImportRoute);
+        }
+
+        return $this->render($this->importFormTemplate, ['form' => $form->createView()]);
     }
 }
