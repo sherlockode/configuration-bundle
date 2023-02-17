@@ -107,6 +107,16 @@ class ParameterManager implements ParameterManagerInterface
             }
         }
 
+        // Setting default values
+        foreach ($this->configurationManager->getDefinedParameters() as $path => $parameterDefinition) {
+            if (!isset($this->data[$path])) {
+                $uv = $this->getUserValue($path, null);
+                if (!is_null($uv)) {
+                    $this->data[$path] = $uv;
+                }
+            }
+        }
+
         return $this->data;
     }
 
@@ -128,6 +138,12 @@ class ParameterManager implements ParameterManagerInterface
             // transform to user value only when the value is requested
             $this->data[$path] = $this->getUserValue($path, $this->parameters[$path]->getValue());
 
+            return $this->data[$path];
+        }
+
+        $uv = $this->getUserValue($path, null); // Returning default user value
+        if (!is_null($uv)) {
+            $this->data[$path] = $uv;
             return $this->data[$path];
         }
 
@@ -214,16 +230,16 @@ class ParameterManager implements ParameterManagerInterface
      *
      * @return mixed
      */
-    private function getUserValue($path, $value)
+    private function getUserValue($path, $value = null)
     {
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
 
-        if (!isset($value)) {
+        if (is_null($value)) {
             $value = $parameterDefinition->getDefaultValue();
         }
 
-        if ($transformer = $fieldType->getModelTransformer($parameterDefinition)) {
+        if (!is_null($value) and $transformer = $fieldType->getModelTransformer($parameterDefinition)) {
             $value = $transformer->transform($value);
         }
 
