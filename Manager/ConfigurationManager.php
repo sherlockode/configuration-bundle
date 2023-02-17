@@ -75,6 +75,9 @@ class ConfigurationManager implements ConfigurationManagerInterface
             if (!isset($data['translation_domain'])) {
                 $data['translation_domain'] = $translationDomain;
             }
+            if (isset($data['default_value'])) {
+                $definition->setDefaultValue($data['default_value']);
+            }
             $definition->setTranslationDomain($data['translation_domain']);
             if (isset($data['options']) && is_array($data['options'])) {
                 $definition->setOptions($data['options']);

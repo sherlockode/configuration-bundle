@@ -219,6 +219,10 @@ class ParameterManager implements ParameterManagerInterface
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
 
+        if (!isset($value)) {
+            $value = $parameterDefinition->getDefaultValue();
+        }
+
         if ($transformer = $fieldType->getModelTransformer($parameterDefinition)) {
             $value = $transformer->transform($value);
         }
