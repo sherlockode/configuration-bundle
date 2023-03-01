@@ -28,18 +28,15 @@ Enable the bundle in the kernel
 
 ```php
 <?php
-// app/AppKernel.php
+// config/bundles.php
 
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new Sherlockode\ConfigurationBundle\SherlockodeConfigurationBundle(),
-    ];
-}
+return [
+    // ...
+    Sherlockode\ConfigurationBundle\SherlockodeConfigurationBundle::class => ['all' => true],
+];
 ```
 
-You will need a Parameter entity in order to store the configuration values in the database.
+You will need a `Parameter` entity in order to store the configuration values in the database.
 
 ```php
 <?php
@@ -79,6 +76,7 @@ class Parameter extends BaseParameter
 The entity class you just created must be set in the bundle's configuration:
 
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     entity_class:
         parameter: App\Entity\Parameter
@@ -86,6 +84,7 @@ sherlockode_configuration:
 
 Now you are free to define any configuration entry you'd like by using the `parameters` key:
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     entity_class:
         parameter: App\Entity\Parameter
@@ -113,6 +112,7 @@ If you want to use translations you can define a `translation_domain` key global
 and use your translation key as the label.
 
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     translation_domain: my_app_domain # default domain is false (no translation)
     parameters:
@@ -135,6 +135,7 @@ The other options are up to the field and its needs. For instance, the choice fi
 `multiple` and `choices` options in order to customize the form.
 
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     parameters:
         guess_access:
@@ -164,6 +165,7 @@ sherlockode_configuration:
 You can also modify the default template used by this controller with the `templates` configuration entry point:
 
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     templates:
         edit_form: 'Parameter/my_parameter_list.html.twig'
@@ -219,6 +221,7 @@ You can export or import parameters in a yaml file. You have two routes for thes
 You also can customize the import form template by defining your own in the configuration:
 
 ```yaml
+# config/packages/sherlockode_configuration.yaml
 sherlockode_configuration:
     templates:
         import_form: 'Parameter/my_import_form.html.twig'

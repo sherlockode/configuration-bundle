@@ -11,22 +11,22 @@ common: &common
 
 
 jobs:
-  test71:
+  test74:
     docker:
-      - image: circleci/php:7.1
+      - image: cimg/php:7.4
     <<: *common
-  test72:
+  test80:
     docker:
-      - image: circleci/php:7.2
+      - image: cimg/php:8.0
     <<: *common
-  test73:
+  test81:
     docker:
-      - image: circleci/php:7.3
+      - image: cimg/php:8.1
     <<: *common
 workflows:
     version: 2
     build:
         jobs:
-            - test71
-            - test72
-            - test73
+            - test74
+            - test80
+            - test81
