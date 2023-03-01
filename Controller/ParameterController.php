@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -128,11 +127,7 @@ class ParameterController extends AbstractController
             }
             $this->parameterManager->save();
 
-            if (Kernel::VERSION_ID < 40300) {
-                $this->eventDispatcher->dispatch(SaveEvent::class, new SaveEvent());
-            } else {
-                $this->eventDispatcher->dispatch(new SaveEvent());
-            }
+            $this->eventDispatcher->dispatch(new SaveEvent());
 
             return $this->redirectToRoute('sherlockode_configuration.parameters');
         }
