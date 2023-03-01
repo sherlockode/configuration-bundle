@@ -33,7 +33,6 @@ class ParametersType extends AbstractType
         foreach ($this->configurationManager->getDefinedParameters() as $definition) {
             $field = $this->fieldTypeManager->getField($definition->getType());
 
-            // TODO: Add default value (if defined) as placeholder
             $baseOptions = [
                 'label' => $definition->getLabel(),
                 'required' => $definition->getOption('required', true),

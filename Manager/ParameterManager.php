@@ -100,19 +100,19 @@ class ParameterManager implements ParameterManagerInterface
         if (false === $this->loaded) {
             $this->loadParameters();
         }
-        // check that every parameter has been transformed to its user value
-        foreach ($this->parameters as $path => $parameter) {
-            if (!isset($this->data[$path])) {
-                $this->data[$parameter->getPath()] = $this->getUserValue($parameter->getPath(), $parameter->getValue());
-            }
-        }
 
-        // Setting default values
         foreach ($this->configurationManager->getDefinedParameters() as $path => $parameterDefinition) {
             if (!isset($this->data[$path])) {
-                $uv = $this->getUserValue($path, null);
-                if (!is_null($uv)) {
-                    $this->data[$path] = $uv;
+                // check if the value exists in the DB
+                if (isset($this->parameters[$path])) {
+                    $value = $this->parameters[$path]->getValue();
+                } else {
+                    $value = $parameterDefinition->getDefaultValue();
+                }
+
+                // check that every parameter has been transformed to its user value
+                if (!is_null($value)) {
+                    $this->data[$path] = $this->getUserValue($path, $value);
                 }
             }
         }
@@ -134,20 +134,22 @@ class ParameterManager implements ParameterManagerInterface
 
         if (isset($this->data[$path])) {
             return $this->data[$path];
-        } elseif (isset($this->parameters[$path])) {
-            // transform to user value only when the value is requested
-            $this->data[$path] = $this->getUserValue($path, $this->parameters[$path]->getValue());
+        } 
+        
+        $value = null;
+        if (isset($this->parameters[$path])) {
+            $value = $this->parameters[$path]->getValue();
+        } else {
+            $value = $this->configurationManager->get($path)->getDefaultValue();
+        }
 
+        // transform to user value only when the value is requested
+        if (!is_null($value)) {
+            $this->data[$path] = $this->getUserValue($path, $value);
             return $this->data[$path];
         }
 
-        $uv = $this->getUserValue($path, null); // Returning default user value
-        if (!is_null($uv)) {
-            $this->data[$path] = $uv;
-            return $this->data[$path];
-        }
-
-        return $default;
+        return $value ?? $default;
     }
 
     /**
@@ -230,16 +232,12 @@ class ParameterManager implements ParameterManagerInterface
      *
      * @return mixed
      */
-    private function getUserValue($path, $value = null)
+    private function getUserValue($path, $value)
     {
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
 
-        if (is_null($value)) {
-            $value = $parameterDefinition->getDefaultValue();
-        }
-
-        if (!is_null($value) and $transformer = $fieldType->getModelTransformer($parameterDefinition)) {
+        if ($transformer = $fieldType->getModelTransformer($parameterDefinition)) {
             $value = $transformer->transform($value);
         }
 

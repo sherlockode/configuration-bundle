@@ -22,7 +22,7 @@ class ParameterDefinition
     /**
      * @var string
      */
-    private $default_value;
+    private $defaultValue;
 
     /**
      * @var string
@@ -83,12 +83,12 @@ class ParameterDefinition
 
     public function getDefaultValue()
     {
-        return $this->default_value;
+        return $this->defaultValue;
     }
 
-    public function setDefaultValue($default_value)
+    public function setDefaultValue($defaultValue)
     {
-        $this->default_value = $default_value;
+        $this->defaultValue = $defaultValue;
 
         return $this;
     }
