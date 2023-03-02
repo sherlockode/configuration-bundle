@@ -5,6 +5,8 @@ namespace Sherlockode\ConfigurationBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ImportType extends AbstractType
 {
@@ -18,6 +20,7 @@ class ImportType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'import_file',
                 'translation_domain' => 'SherlockodeConfigurationBundle',
+                'constraints' => [new NotBlank(), new File(['mimeTypes' => ['text/plain']])],
             ])
         ;
     }
