@@ -2,6 +2,7 @@
 
 namespace Sherlockode\ConfigurationBundle\Manager;
 
+use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -13,11 +14,18 @@ class ImportManager implements ImportManagerInterface
     private $parameterManager;
 
     /**
-     * @param ParameterManagerInterface $parameterManager
+     * @var AbstractVault
      */
-    public function __construct(ParameterManagerInterface $parameterManager)
+    private $vault;
+
+    /**
+     * @param ParameterManagerInterface $parameterManager
+     * @param AbstractVault             $vault
+     */
+    public function __construct(ParameterManagerInterface $parameterManager, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
+        $this->vault = $vault;
     }
 
     /**
@@ -33,5 +41,18 @@ class ImportManager implements ImportManagerInterface
 
         $this->parameterManager->save();
         unlink($source->getRealPath());
+    }
+
+    /**
+     * @return void
+     */
+    public function importFromVault(): void
+    {
+        foreach ($this->parameterManager->getAll() as $path => $value) {
+            $stringValue = $this->vault->reveal($path);
+            $this->parameterManager->set($path, $this->parameterManager->getUserValue($path, $stringValue));
+        }
+
+        $this->parameterManager->save();
     }
 }

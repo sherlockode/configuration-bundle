@@ -2,6 +2,7 @@
 
 namespace Sherlockode\ConfigurationBundle\Manager;
 
+use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\Yaml\Yaml;
 
 class ExportManager implements ExportManagerInterface
@@ -12,11 +13,18 @@ class ExportManager implements ExportManagerInterface
     private $parameterManager;
 
     /**
-     * @param ParameterManagerInterface $parameterManager
+     * @var AbstractVault
      */
-    public function __construct(ParameterManagerInterface $parameterManager)
+    private $vault;
+
+    /**
+     * @param ParameterManagerInterface $parameterManager
+     * @param AbstractVault             $vault
+     */
+    public function __construct(ParameterManagerInterface $parameterManager, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
+        $this->vault = $vault;
     }
 
     /**
@@ -27,5 +35,21 @@ class ExportManager implements ExportManagerInterface
         $parameters = $this->parameterManager->getAll();
 
         return Yaml::dump($parameters);
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function exportInVault(): void
+    {
+        foreach ($this->parameterManager->getAll() as $path => $value) {
+            $stringValue = $this->parameterManager->getStringValue($path, $value);
+
+            if (null !== $stringValue) {
+                $this->vault->seal($path, $stringValue);
+            }
+        }
     }
 }

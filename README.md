@@ -212,9 +212,10 @@ $email = $parameterManager->get('contact_email');
 $maxAttempts = $parameterManager->get('max_user_login_attempts', 5);
 ```
 
-### Import / export from files
+### Import / export from the browser
 
 You can export or import parameters in a yaml file. You have two routes for these operations:
+
 * `sherlockode_configuration.export`
 * `sherlockode_configuration.import`
 
@@ -225,6 +226,20 @@ You also can customize the import form template by defining your own in the conf
 sherlockode_configuration:
     templates:
         import_form: 'Parameter/my_import_form.html.twig'
+```
+
+### Import / export from CLI
+
+You can export or import your parameters with these two Symfony commands:
+
+* `sherlockode:configuration:export`
+* `sherlockode:configuration:import`
+
+These commands rely on the [Symfony secrets mechanism](https://symfony.com/doc/current/configuration/secrets.html).
+So be sure to generate your credentials with the following command:
+
+```shell
+$ php bin/console secrets:generate-keys
 ```
 
 ## Field types

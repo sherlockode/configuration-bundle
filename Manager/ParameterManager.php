@@ -196,7 +196,7 @@ class ParameterManager implements ParameterManagerInterface
      *
      * @return string
      */
-    private function getStringValue($path, $value)
+    public function getStringValue($path, $value)
     {
         $parameterConfig = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
@@ -214,7 +214,7 @@ class ParameterManager implements ParameterManagerInterface
      *
      * @return mixed
      */
-    private function getUserValue($path, $value)
+    public function getUserValue($path, $value)
     {
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
