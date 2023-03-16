@@ -47,6 +47,9 @@
             <argument/>
         </service>
 
+        <service id="sherlockode_configuration.constraint_manager" class="Sherlockode\ConfigurationBundle\Manager\ConstraintManager">
+        </service>
+
         <service id="sherlockode_configuration.export_manager" class="Sherlockode\ConfigurationBundle\Manager\ExportManager">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
             <argument type="service" id="secrets.vault"/>
@@ -60,6 +63,7 @@
         <service id="sherlockode_configuration.form.parameters" class="Sherlockode\ConfigurationBundle\Form\Type\ParametersType">
             <argument type="service" id="sherlockode_configuration.configuration_manager"/>
             <argument type="service" id="sherlockode_configuration.field_manager"/>
+            <argument type="service" id="sherlockode_configuration.constraint_manager"/>
             <tag name="form.type"/>
         </service>
         <service id="sherlockode_configuration.form.image" class="Sherlockode\ConfigurationBundle\Form\Type\ImageType">
