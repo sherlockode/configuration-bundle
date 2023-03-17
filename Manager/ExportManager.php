@@ -32,7 +32,14 @@ class ExportManager implements ExportManagerInterface
      */
     public function exportAsString(): string
     {
-        $parameters = $this->parameterManager->getAll();
+        $parameters = [];
+        foreach ($this->parameterManager->getAll() as $path => $value) {
+            $stringValue = $this->parameterManager->getStringValue($path, $value);
+
+            if (null !== $stringValue) {
+                $parameters[$path] = $stringValue;
+            }
+        }
 
         return Yaml::dump($parameters);
     }
