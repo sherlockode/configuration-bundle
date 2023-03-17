@@ -3,6 +3,7 @@
 namespace Sherlockode\ConfigurationBundle\Form\Type;
 
 use Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface;
+use Sherlockode\ConfigurationBundle\Manager\ConstraintManagerInterface;
 use Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,10 +23,19 @@ class ParametersType extends AbstractType
      */
     private $fieldTypeManager;
 
-    public function __construct(ConfigurationManagerInterface $configurationManager, FieldTypeManagerInterface $fieldTypeManager)
-    {
+    /**
+     * @var ConstraintManagerInterface
+     */
+    private $constraintManager;
+
+    public function __construct(
+        ConfigurationManagerInterface $configurationManager,
+        FieldTypeManagerInterface $fieldTypeManager,
+        ConstraintManagerInterface $constraintManager
+    ) {
         $this->fieldTypeManager = $fieldTypeManager;
         $this->configurationManager = $configurationManager;
+        $this->constraintManager = $constraintManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -41,6 +51,7 @@ class ParametersType extends AbstractType
                 'label_attr' => $definition->getOption('label_attr', []),
                 'help' => $definition->getOption('help'),
                 'translation_domain' => $definition->getTranslationDomain(),
+                'constraints' => $this->constraintManager->getConstraints($definition->getOption('constraints', [])),
             ];
             $childOptions = array_merge($baseOptions, $field->getFormOptions($definition));
 

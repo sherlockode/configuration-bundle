@@ -149,6 +149,29 @@ sherlockode_configuration:
                     no: 0
 ```
 
+Every field may also have a `constraints` option to define validation constraints.
+You can use Symfony built-in constraints or add your own:
+
+```yaml
+# config/packages/sherlockode_configuration.yaml
+sherlockode_configuration:
+    parameters:
+        website_title:
+            label: Website title
+            type: simple
+            options:
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Length:
+                        min: 8
+                        max: 255
+                        minMessage: 'This field must be at least {{ limit }} characters long'
+                        maxMessage: 'This field must be at least {{ limit }} characters long'
+                    - App\Validator\ContainsAlphanumeric:
+                        message: "The website title can only contains alphanumeric characters" 
+```
+
 ## Usage
 
 ### Default controller
