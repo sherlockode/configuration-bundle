@@ -35,8 +35,8 @@ class ImportManager implements ImportManagerInterface
     {
         $raw = Yaml::parseFile($source->getRealPath());
 
-        foreach ($raw as $key => $value) {
-            $this->parameterManager->set($key, $value);
+        foreach ($raw as $path => $stringValue) {
+            $this->parameterManager->set($path, $this->parameterManager->getUserValue($path, $stringValue));
         }
 
         $this->parameterManager->save();
