@@ -22,6 +22,11 @@ class ParameterDefinition
     /**
      * @var string
      */
+    private $defaultValue;
+
+    /**
+     * @var string
+     */
     private $translationDomain;
 
     /**
@@ -74,6 +79,18 @@ class ParameterDefinition
     public function getType()
     {
         return $this->type;
+    }
+
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
     }
 
     /**

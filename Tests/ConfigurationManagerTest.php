@@ -14,6 +14,7 @@ class ConfigurationManagerTest extends TestCase
             'path' => [
                 'type'  => 'string',
                 'label' => 'test',
+                'default_value' => '42',
                 'options' => ['opt' => 'val'],
                 'translation_domain' => 'translation',
             ],
@@ -24,6 +25,7 @@ class ConfigurationManagerTest extends TestCase
         $parameterDefinition->setLabel('test');
         $parameterDefinition->setOptions(['opt' => 'val']);
         $parameterDefinition->setTranslationDomain('translation');
+        $parameterDefinition->setDefaultValue('42');
 
         $this->assertEquals($parameterDefinition, $configurationManager->get('path'));
         $this->assertFalse($configurationManager->has('foo'));
