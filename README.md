@@ -277,6 +277,7 @@ Here are the field types provided in the bundle, located in the namespace `Sherl
 * datetime
 * entity
 * image
+* password
 
 ### Custom Field types
 
