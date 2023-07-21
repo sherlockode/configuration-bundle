@@ -56,7 +56,7 @@ class PasswordField extends AbstractField
         $currentValue = $parameter ? $parameter->getValue() : null;
 
         return new CallbackTransformer(function ($data) {
-            return null;
+            return $data;
         }, function ($data) use ($currentValue) {
             if (!$data && $currentValue) {
                 return $currentValue;
