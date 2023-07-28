@@ -265,6 +265,16 @@ So be sure to generate your credentials with the following command:
 $ php bin/console secrets:generate-keys
 ```
 
+### Events
+
+When parameters are saved in database, multiple events are dispatched
+
+* `Sherlockode\ConfigurationBundle\Event\PreSaveEvent` is dispatch before saving parameters;
+* `Sherlockode\ConfigurationBundle\Event\SaveEvent` is dispatch just after saving new parameters values
+  in database;
+* `Sherlockode\ConfigurationBundle\Event\PostSaveEvent` is dispatch just after the SaveEvent. It can be 
+  useful for customizing redirection or adding flash message for example;
+
 ## Field types
 
 ### Default types

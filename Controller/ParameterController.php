@@ -2,6 +2,8 @@
 
 namespace Sherlockode\ConfigurationBundle\Controller;
 
+use Sherlockode\ConfigurationBundle\Event\PostSaveEvent;
+use Sherlockode\ConfigurationBundle\Event\PreSaveEvent;
 use Sherlockode\ConfigurationBundle\Event\SaveEvent;
 use Sherlockode\ConfigurationBundle\Form\Type\ImportType;
 use Sherlockode\ConfigurationBundle\Form\Type\ParametersType;
@@ -122,12 +124,27 @@ class ParameterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $params = $form->getData();
+
+            $preSaveEvent = new PreSaveEvent($request, $params);
+            $this->eventDispatcher->dispatch($preSaveEvent);
+
+            if ($preSaveEvent->getResponse()) {
+                return $preSaveEvent->getResponse();
+            }
+
             foreach ($params as $path => $value) {
                 $this->parameterManager->set($path, $value);
             }
             $this->parameterManager->save();
 
             $this->eventDispatcher->dispatch(new SaveEvent());
+
+            $postSaveEvent = new PostSaveEvent($request);
+            $this->eventDispatcher->dispatch($postSaveEvent);
+
+            if ($postSaveEvent->getResponse()) {
+                return $postSaveEvent->getResponse();
+            }
 
             return $this->redirectToRoute('sherlockode_configuration.parameters');
         }
