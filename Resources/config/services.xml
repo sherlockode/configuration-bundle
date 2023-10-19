@@ -19,12 +19,10 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="router"/>
+            <argument type="service" id="twig"/>
             <argument>%sherlockode_configuration.templates.edit_form%</argument>
             <argument>%sherlockode_configuration.templates.import_form%</argument>
             <argument>%sherlockode_configuration.import.redirect_after%</argument>
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
         </service>
 
         <service id="sherlockode_configuration.configuration_manager" class="Sherlockode\ConfigurationBundle\Manager\ConfigurationManager">

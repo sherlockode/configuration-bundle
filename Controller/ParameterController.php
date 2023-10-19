@@ -14,15 +14,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class ParameterController
  */
-class ParameterController extends AbstractController
+class ParameterController
 {
     /**
      * @var ParameterManagerInterface
@@ -60,6 +65,11 @@ class ParameterController extends AbstractController
     private $urlGenerator;
 
     /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
      * @var string
      */
     private $editFormTemplate;
@@ -84,6 +94,7 @@ class ParameterController extends AbstractController
      * @param RequestStack              $requestStack
      * @param FormFactoryInterface      $formFactory
      * @param UrlGeneratorInterface     $urlGenerator
+     * @param Environment               $twig
      * @param string                    $editFormTemplate
      * @param string                    $importFormTemplate
      * @param string                    $redirectAfterImportRoute
@@ -96,6 +107,7 @@ class ParameterController extends AbstractController
         RequestStack $requestStack,
         FormFactoryInterface $formFactory,
         UrlGeneratorInterface $urlGenerator,
+        Environment $twig,
         string $editFormTemplate,
         string $importFormTemplate,
         string $redirectAfterImportRoute
@@ -107,6 +119,7 @@ class ParameterController extends AbstractController
         $this->requestStack = $requestStack;
         $this->formFactory = $formFactory;
         $this->urlGenerator = $urlGenerator;
+        $this->twig = $twig;
         $this->editFormTemplate = $editFormTemplate;
         $this->importFormTemplate = $importFormTemplate;
         $this->redirectAfterImportRoute = $redirectAfterImportRoute;
@@ -116,10 +129,14 @@ class ParameterController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): Response
     {
-        $form = $this->createForm(ParametersType::class, $this->parameterManager->getAll());
+        $form = $this->formFactory->create(ParametersType::class, $this->parameterManager->getAll());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -146,12 +163,12 @@ class ParameterController extends AbstractController
                 return $postSaveEvent->getResponse();
             }
 
-            return $this->redirectToRoute('sherlockode_configuration.parameters');
+            return new RedirectResponse($this->urlGenerator->generate('sherlockode_configuration.parameters'));
         }
 
-        return $this->render($this->editFormTemplate, [
+        return new Response($this->twig->render($this->editFormTemplate, [
             'form' => $form->createView(),
-        ]);
+        ]));
     }
 
     /**
@@ -170,9 +187,15 @@ class ParameterController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function importAction(): Response
+    public function importAction(Request $request): Response
     {
         $form = $this->formFactory->create(ImportType::class, [], [
             'action' => $this->urlGenerator->generate('sherlockode_configuration.import'),
@@ -181,16 +204,23 @@ class ParameterController extends AbstractController
         $form->handleRequest($this->requestStack->getMainRequest());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session = $request->hasSession() ? $request->getSession() : null;
+
             try {
                 $this->importManager->import($form->get('file')->getData());
-                $this->addFlash('success', 'successfully_imported');
+
+                if ($session) {
+                    $session->getFlashbag()->add('success', 'successfully_imported');
+                }
             } catch (\Exception $exception) {
-                $this->addFlash('error', 'an_error_occurred_during_import');
+                if ($session) {
+                    $session->getFlashbag()->add('error', 'an_error_occurred_during_import');
+                }
             }
 
-            return $this->redirectToRoute($this->redirectAfterImportRoute);
+            return new RedirectResponse($this->urlGenerator->generate($this->redirectAfterImportRoute));
         }
 
-        return $this->render($this->importFormTemplate, ['form' => $form->createView()]);
+        return new Response($this->twig->render($this->importFormTemplate, ['form' => $form->createView()]));
     }
 }
