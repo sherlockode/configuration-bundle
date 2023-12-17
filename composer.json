@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "symfony/framework-bundle": "^4.4 || ^5.0 || ^6.0",
         "symfony/validator": "^4.4 || ^5.0 || ^6.0",
         "twig/twig": "^3.0"
