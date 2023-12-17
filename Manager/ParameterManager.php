@@ -40,10 +40,7 @@ class ParameterManager implements ParameterManagerInterface
 
     private bool $loaded;
 
-    /**
-     * @var ConfigurationManagerInterface[]
-     */
-    private array $configurationManager;
+    private ConfigurationManagerInterface $configurationManager;
 
     private FieldTypeManagerInterface $fieldTypeManager;
 

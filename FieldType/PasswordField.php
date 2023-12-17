@@ -5,6 +5,7 @@ namespace Sherlockode\ConfigurationBundle\FieldType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
+use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class PasswordField extends AbstractField
