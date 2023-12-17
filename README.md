@@ -317,7 +317,7 @@ The bundle also provides a `CallbackTransformer` that can be used for faster imp
 For instance handling an array can be done like this :
 
 ```php
-public function getModelTransformer(ParameterDefinition $definition)
+public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
 {
     return new CallbackTransformer(
         function ($data) {

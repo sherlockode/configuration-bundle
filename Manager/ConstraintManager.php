@@ -7,11 +7,6 @@ use Symfony\Component\Validator\Mapping\Loader\AbstractLoader;
 
 class ConstraintManager implements ConstraintManagerInterface
 {
-    /**
-     * @param array $definition
-     *
-     * @return array
-     */
     public function getConstraints(array $definition): array
     {
         $constraints = [];
@@ -26,11 +21,6 @@ class ConstraintManager implements ConstraintManagerInterface
     }
 
     /**
-     * @param string     $fqcn
-     * @param array|null $args
-     *
-     * @return Constraint
-     *
      * @throws \Exception
      */
     private function create(string $fqcn, ?array $args): Constraint

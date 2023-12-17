@@ -9,25 +9,17 @@ use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 
 class ImageField extends AbstractField
 {
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return ImageType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'image';
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return TransformerInterface
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         return new ArrayTransformer();
     }

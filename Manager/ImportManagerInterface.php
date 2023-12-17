@@ -6,13 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 interface ImportManagerInterface
 {
-    /**
-     * @param File $source
-     */
     public function import(File $source): void;
 
-    /**
-     * @return void
-     */
     public function importFromVault(): void;
 }

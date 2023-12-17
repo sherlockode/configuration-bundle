@@ -14,14 +14,8 @@ class ExportCommand extends Command
     protected static $defaultName = 'sherlockode:configuration:export';
     protected static $defaultDescription = 'Export configuration parameters to the vault';
 
-    /**
-     * @var ExportManagerInterface
-     */
-    private $exportManager;
+    private ExportManagerInterface $exportManager;
 
-    /**
-     * @param ExportManagerInterface $exportManager
-     */
     public function __construct(ExportManagerInterface $exportManager)
     {
         parent::__construct();

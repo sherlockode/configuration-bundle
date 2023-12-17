@@ -8,33 +8,21 @@ interface ParameterManagerInterface
      * Get all parameter values
      *
      * Return an associative array as : path => value
-     *
-     * @return array
      */
-    public function getAll();
+    public function getAll(): array;
 
     /**
      * Save all parameters into the database
      */
-    public function save();
+    public function save(): void;
 
     /**
      * Get an existing parameter value for a given path
-     *
-     * @param string $path
-     * @param mixed  $default
-     *
-     * @return mixed
      */
-    public function get($path, $default = null);
+    public function get(string $path, mixed $default = null): mixed;
 
     /**
      * Set the value of a parameter at given path
-     *
-     * @param string $path
-     * @param mixed  $value
-     *
-     * @return $this
      */
-    public function set($path, $value);
+    public function set(string $path, mixed $value): self;
 }

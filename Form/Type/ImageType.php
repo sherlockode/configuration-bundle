@@ -16,10 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageType extends AbstractType
 {
-    /**
-     * @var UploadManagerInterface
-     */
-    private $uploadManager;
+    private UploadManagerInterface $uploadManager;
 
     public function __construct(UploadManagerInterface $uploadManager)
     {
@@ -73,9 +70,6 @@ class ImageType extends AbstractType
         );
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('translation_domain', 'SherlockodeConfigurationBundle');
@@ -96,9 +90,6 @@ class ImageType extends AbstractType
 
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return 'config_image';

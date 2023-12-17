@@ -9,25 +9,17 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class DateTimeField extends AbstractField
 {
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return DateTimeType::class;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'datetime';
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return TransformerInterface
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         return new CallbackTransformer(
             function ($data) {

@@ -4,35 +4,17 @@ namespace Sherlockode\ConfigurationBundle\Model;
 
 interface ParameterInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
-    /**
-     * @return string
-     */
-    public function getPath();
+    public function getPath(): string;
 
-    /**
-     * @param string $path
-     *
-     * @return $this
-     */
-    public function setPath($path);
+    public function setPath(string $path): self;
 
     /**
      * Return the value stored in the database.
      * This value is always a string. Use TransformerInterface for non-primary types
-     *
-     * @return string
      */
-    public function getValue();
+    public function getValue(): string;
 
-    /**
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function setValue($value);
+    public function setValue(string $value): self;
 }

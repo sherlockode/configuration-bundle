@@ -13,20 +13,11 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ParametersType extends AbstractType
 {
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    private $configurationManager;
+    private ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @var FieldTypeManagerInterface
-     */
-    private $fieldTypeManager;
+    private FieldTypeManagerInterface $fieldTypeManager;
 
-    /**
-     * @var ConstraintManagerInterface
-     */
-    private $constraintManager;
+    private ConstraintManagerInterface $constraintManager;
 
     public function __construct(
         ConfigurationManagerInterface $configurationManager,

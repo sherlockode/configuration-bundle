@@ -14,14 +14,8 @@ class ImportCommand extends Command
     protected static $defaultName = 'sherlockode:configuration:import';
     protected static $defaultDescription = 'Import configuration parameters from the vault';
 
-    /**
-     * @var ImportManagerInterface
-     */
-    private $importManager;
+    private ImportManagerInterface $importManager;
 
-    /**
-     * @param ImportManagerInterface $importManager
-     */
     public function __construct(ImportManagerInterface $importManager)
     {
         parent::__construct();

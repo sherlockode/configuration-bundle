@@ -7,22 +7,12 @@ use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 
 abstract class AbstractField implements FieldTypeInterface
 {
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return array
-     */
-    public function getFormOptions(ParameterDefinition $definition)
+    public function getFormOptions(ParameterDefinition $definition): array
     {
         return [];
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return TransformerInterface
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         return null;
     }

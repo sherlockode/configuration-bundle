@@ -6,29 +6,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface UploadManagerInterface
 {
-    /**
-     * @param UploadedFile|null $file
-     *
-     * @return string
-     */
-    public function upload(UploadedFile $file = null);
+    public function upload(?UploadedFile $file = null): string;
 
-    /**
-     * @param string $filename
-     */
-    public function remove($filename);
+    public function remove(string $filename): void;
 
-    /**
-     * @param string $filename
-     *
-     * @return string
-     */
-    public function resolveUri($filename);
+    public function resolveUri(string $filename): string;
 
-    /**
-     * @param string $filename
-     *
-     * @return string
-     */
-    public function getFilePath($filename);
+    public function getFilePath(string $filename): string;
 }

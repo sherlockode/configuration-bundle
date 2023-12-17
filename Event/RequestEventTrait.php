@@ -6,15 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 trait RequestEventTrait
 {
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }

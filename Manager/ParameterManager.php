@@ -10,67 +10,49 @@ use Sherlockode\ConfigurationBundle\Model\ParameterInterface;
  */
 class ParameterManager implements ParameterManagerInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * Class name of the parameter entity
-     *
-     * @var string
      */
-    private $class;
+    private string $class;
 
     /**
      * List of parameter objects
      *
      * @var ParameterInterface[]
      */
-    private $parameters;
+    private array $parameters;
 
     /**
      * Keep track of the new objects for the save action
      *
      * @var ParameterInterface[]
      */
-    private $newParameters;
+    private array $newParameters;
 
     /**
      * Parameters with "real" types (not strings), ie. after transformation from the database
      *
      * Associative array with : path => value
-     *
-     * @var array
      */
-    private $data;
+    private array $data;
 
-    /**
-     * @var bool
-     */
-    private $loaded;
+    private bool $loaded;
 
     /**
      * @var ConfigurationManagerInterface[]
      */
-    private $configurationManager;
+    private array $configurationManager;
 
-    /**
-     * @var FieldTypeManagerInterface
-     */
-    private $fieldTypeManager;
+    private FieldTypeManagerInterface $fieldTypeManager;
 
     /**
      * ParameterManager constructor.
-     *
-     * @param EntityManagerInterface        $em
-     * @param string                        $class
-     * @param ConfigurationManagerInterface $configurationManager
-     * @param FieldTypeManagerInterface     $fieldTypeManager
      */
     public function __construct(
         EntityManagerInterface $em,
-        $class,
+        string $class,
         ConfigurationManagerInterface $configurationManager,
         FieldTypeManagerInterface $fieldTypeManager
     ) {
@@ -84,18 +66,12 @@ class ParameterManager implements ParameterManagerInterface
         $this->fieldTypeManager = $fieldTypeManager;
     }
 
-    /**
-     * @return string
-     */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return array
-     */
-    public function getAll()
+    public function getAll(): array
     {
         if (false === $this->loaded) {
             $this->loadParameters();
@@ -120,13 +96,7 @@ class ParameterManager implements ParameterManagerInterface
         return $this->data;
     }
 
-    /**
-     * @param string $path
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function get($path, $default = null)
+    public function get(string $path, mixed $default = null): mixed
     {
         if (false === $this->loaded) {
             $this->loadParameters();
@@ -152,13 +122,7 @@ class ParameterManager implements ParameterManagerInterface
         return $value ?? $default;
     }
 
-    /**
-     * @param string $path
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function set($path, $value)
+    public function set(string $path, mixed $value): self
     {
         if (false === $this->loaded) {
             $this->loadParameters();
@@ -183,7 +147,7 @@ class ParameterManager implements ParameterManagerInterface
     /**
      * Save all parameters into the database
      */
-    public function save()
+    public function save(): void
     {
         foreach ($this->newParameters as $parameter) {
             $this->em->persist($parameter);
@@ -195,7 +159,7 @@ class ParameterManager implements ParameterManagerInterface
      * Load the parameters from the database
      * and transform their string value into the expected type
      */
-    private function loadParameters()
+    private function loadParameters(): void
     {
         $parameters = $this->em->getRepository($this->class)->findAll();
         /** @var ParameterInterface $parameter */
@@ -208,13 +172,7 @@ class ParameterManager implements ParameterManagerInterface
         $this->loaded = true;
     }
 
-    /**
-     * @param string $path
-     * @param mixed  $value
-     *
-     * @return string
-     */
-    public function getStringValue($path, $value)
+    public function getStringValue(string $path, mixed $value): string
     {
         $parameterConfig = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
@@ -226,13 +184,7 @@ class ParameterManager implements ParameterManagerInterface
         return $value;
     }
 
-    /**
-     * @param string $path
-     * @param string $value
-     *
-     * @return mixed
-     */
-    public function getUserValue($path, $value)
+    public function getUserValue(string $path, string $value): mixed
     {
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());

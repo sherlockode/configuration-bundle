@@ -9,48 +9,27 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class PasswordField extends AbstractField
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var string
-     */
-    private $parameterClass;
+    private string $parameterClass;
 
-    /**
-     * @param EntityManagerInterface $em
-     * @param string                 $parameterClass
-     */
-    public function __construct(EntityManagerInterface $em, $parameterClass)
+    public function __construct(EntityManagerInterface $em, string $parameterClass)
     {
         $this->em = $em;
         $this->parameterClass = $parameterClass;
     }
 
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return PasswordType::class;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'password';
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return CallbackTransformer
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         $parameter = $this->em->getRepository($this->parameterClass)->findOneBy(['path' => $definition->getPath()]);
         $currentValue = $parameter ? $parameter->getValue() : null;

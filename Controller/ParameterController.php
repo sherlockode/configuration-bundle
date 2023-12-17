@@ -29,75 +29,30 @@ use Twig\Error\SyntaxError;
  */
 class ParameterController
 {
-    /**
-     * @var ParameterManagerInterface
-     */
-    private $parameterManager;
+    private ParameterManagerInterface $parameterManager;
 
-    /**
-     * @var ExportManagerInterface
-     */
-    private $exportManager;
+    private ExportManagerInterface $exportManager;
 
-    /**
-     * @var ImportManagerInterface
-     */
-    private $importManager;
+    private ImportManagerInterface $importManager;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment $twig;
 
-    /**
-     * @var string
-     */
-    private $editFormTemplate;
+    private string $editFormTemplate;
 
-    /**
-     * @var string
-     */
-    private $importFormTemplate;
+    private string $importFormTemplate;
 
-    /**
-     * @var string
-     */
-    private $redirectAfterImportRoute;
+    private string $redirectAfterImportRoute;
 
     /**
      * ParameterController constructor.
-     *
-     * @param ParameterManagerInterface $parameterManager
-     * @param ExportManagerInterface    $exportManager
-     * @param ImportManagerInterface    $importManager
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param RequestStack              $requestStack
-     * @param FormFactoryInterface      $formFactory
-     * @param UrlGeneratorInterface     $urlGenerator
-     * @param Environment               $twig
-     * @param string                    $editFormTemplate
-     * @param string                    $importFormTemplate
-     * @param string                    $redirectAfterImportRoute
      */
     public function __construct(
         ParameterManagerInterface $parameterManager,
@@ -126,10 +81,6 @@ class ParameterController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -171,9 +122,6 @@ class ParameterController
         ]));
     }
 
-    /**
-     * @return Response
-     */
     public function exportAction(): Response
     {
         $response = new Response($this->exportManager->exportAsString());
@@ -187,10 +135,6 @@ class ParameterController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
