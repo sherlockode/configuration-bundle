@@ -23,7 +23,7 @@ class ImageType extends AbstractType
         $this->uploadManager = $uploadManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('file', FileType::class, [
@@ -70,7 +70,7 @@ class ImageType extends AbstractType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('translation_domain', 'SherlockodeConfigurationBundle');
     }
@@ -78,7 +78,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $source = '';
         $data = $form->getData();

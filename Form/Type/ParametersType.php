@@ -29,7 +29,7 @@ class ParametersType extends AbstractType
         $this->constraintManager = $constraintManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($this->configurationManager->getDefinedParameters() as $definition) {
             $field = $this->fieldTypeManager->getField($definition->getType());
