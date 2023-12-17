@@ -6,14 +6,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait ResponseEventTrait
 {
-    private Response $response;
+    private ?Response $response = null;
 
-    public function getResponse(): Response
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
 
-    public function setResponse(Response $response): self
+    public function setResponse(?Response $response): self
     {
         $this->response = $response;
 
