@@ -31,10 +31,6 @@ class ImportCommand extends Command
         $this->importManager->importFromVault();
         $io->success('Configuration successfully imported from vault');
 
-        if (Kernel::VERSION_ID >= 50100) {
-            return Command::SUCCESS;
-        }
-
-        return 0;
+        return Command::SUCCESS;
     }
 }
