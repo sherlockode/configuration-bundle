@@ -31,10 +31,6 @@ class ExportCommand extends Command
         $this->exportManager->exportInVault();
         $io->success('Configuration successfully sealed in vault');
 
-        if (Kernel::VERSION_ID >= 50100) {
-            return Command::SUCCESS;
-        }
-
-        return 0;
+        return Command::SUCCESS;
     }
 }
