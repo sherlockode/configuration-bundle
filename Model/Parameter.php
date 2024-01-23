@@ -8,7 +8,7 @@ class Parameter implements ParameterInterface
 
     protected string $path;
 
-    protected string $value;
+    protected ?string $value = null;
 
     public function getId(): int
     {
@@ -27,12 +27,12 @@ class Parameter implements ParameterInterface
         return $this;
     }
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    public function setValue(?string $value): self
     {
         $this->value = $value;
 

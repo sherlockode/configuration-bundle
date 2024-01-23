@@ -10,7 +10,7 @@ class ParameterDefinition
 
     private string $label;
 
-    private string $defaultValue;
+    private ?string $defaultValue = null;
 
     private string $translationDomain;
 
@@ -49,12 +49,12 @@ class ParameterDefinition
         return $this->type;
     }
 
-    public function getDefaultValue(): string
+    public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
     }
 
-    public function setDefaultValue($defaultValue): self
+    public function setDefaultValue(?string $defaultValue): self
     {
         $this->defaultValue = $defaultValue;
 

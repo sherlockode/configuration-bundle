@@ -169,7 +169,7 @@ class ParameterManager implements ParameterManagerInterface
         $this->loaded = true;
     }
 
-    public function getStringValue(string $path, mixed $value): string
+    public function getStringValue(string $path, mixed $value): ?string
     {
         $parameterConfig = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
@@ -181,7 +181,7 @@ class ParameterManager implements ParameterManagerInterface
         return $value;
     }
 
-    public function getUserValue(string $path, string $value): mixed
+    public function getUserValue(string $path, ?string $value): mixed
     {
         $parameterDefinition = $this->configurationManager->get($path);
         $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());

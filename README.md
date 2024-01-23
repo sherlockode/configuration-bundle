@@ -59,7 +59,7 @@ class Parameter extends BaseParameter
     protected string $path;
 
     #[ORM\Column(name: 'value', type: 'text', nullable: true)]
-    protected string $value;
+    protected ?string $value = null;
 }
 ```
 

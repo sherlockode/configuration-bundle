@@ -14,7 +14,7 @@ interface ParameterInterface
      * Return the value stored in the database.
      * This value is always a string. Use TransformerInterface for non-primary types
      */
-    public function getValue(): string;
+    public function getValue(): ?string;
 
-    public function setValue(string $value): self;
+    public function setValue(?string $value): self;
 }
