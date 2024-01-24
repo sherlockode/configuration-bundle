@@ -11,23 +11,15 @@ interface ConfigurationManagerInterface
      *
      * @return ParameterDefinition[]
      */
-    public function getDefinedParameters();
+    public function getDefinedParameters(): array;
 
     /**
      * Check a definition's existence
-     *
-     * @param string $path
-     *
-     * @return bool
      */
-    public function has($path);
+    public function has(string $path): bool;
 
     /**
      * Get a definition from a path
-     *
-     * @param string $path
-     *
-     * @return ParameterDefinition
      */
-    public function get($path);
+    public function get(string $path): ParameterDefinition;
 }

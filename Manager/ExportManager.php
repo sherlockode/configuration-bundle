@@ -7,29 +7,16 @@ use Symfony\Component\Yaml\Yaml;
 
 class ExportManager implements ExportManagerInterface
 {
-    /**
-     * @var ParameterManagerInterface
-     */
-    private $parameterManager;
+    private ParameterManagerInterface $parameterManager;
 
-    /**
-     * @var AbstractVault
-     */
-    private $vault;
+    private AbstractVault $vault;
 
-    /**
-     * @param ParameterManagerInterface $parameterManager
-     * @param AbstractVault             $vault
-     */
     public function __construct(ParameterManagerInterface $parameterManager, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
         $this->vault = $vault;
     }
 
-    /**
-     * @return string
-     */
     public function exportAsString(): string
     {
         $parameters = [];
@@ -45,8 +32,6 @@ class ExportManager implements ExportManagerInterface
     }
 
     /**
-     * @return void
-     *
      * @throws \Exception
      */
     public function exportInVault(): void

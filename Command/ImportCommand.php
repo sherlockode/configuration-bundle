@@ -3,25 +3,21 @@
 namespace Sherlockode\ConfigurationBundle\Command;
 
 use Sherlockode\ConfigurationBundle\Manager\ImportManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\Kernel;
 
+#[AsCommand(
+    name: 'sherlockode:configuration:import',
+    description: 'Import configuration parameters from the vault.'
+)]
 class ImportCommand extends Command
 {
-    protected static $defaultName = 'sherlockode:configuration:import';
-    protected static $defaultDescription = 'Import configuration parameters from the vault';
+    private ImportManagerInterface $importManager;
 
-    /**
-     * @var ImportManagerInterface
-     */
-    private $importManager;
-
-    /**
-     * @param ImportManagerInterface $importManager
-     */
     public function __construct(ImportManagerInterface $importManager)
     {
         parent::__construct();
@@ -35,10 +31,6 @@ class ImportCommand extends Command
         $this->importManager->importFromVault();
         $io->success('Configuration successfully imported from vault');
 
-        if (Kernel::VERSION_ID >= 50100) {
-            return Command::SUCCESS;
-        }
-
-        return 0;
+        return Command::SUCCESS;
     }
 }

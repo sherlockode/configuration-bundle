@@ -6,17 +6,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadManager implements UploadManagerInterface
 {
-    /**
-     * @var string
-     */
-    private $targetDir;
+    private string $targetDir;
 
-    /**
-     * @var string
-     */
-    private $webPath;
+    private string $webPath;
 
-    public function __construct($targetDir, $webPath)
+    public function __construct(string $targetDir, string $webPath)
     {
         $this->targetDir = $targetDir;
         $this->webPath = $webPath;
@@ -24,12 +18,8 @@ class UploadManager implements UploadManagerInterface
 
     /**
      * Upload file on server
-     *
-     * @param UploadedFile|null $file
-     *
-     * @return string
      */
-    public function upload(UploadedFile $file = null)
+    public function upload(?UploadedFile $file = null): string
     {
         if ($file === null) {
             return '';
@@ -43,10 +33,8 @@ class UploadManager implements UploadManagerInterface
 
     /**
      * Remove file
-     *
-     * @param string $filename
      */
-    public function remove($filename)
+    public function remove(string $filename): void
     {
         $filepath = $this->getFilePath($filename);
 
@@ -57,24 +45,15 @@ class UploadManager implements UploadManagerInterface
         unlink($filepath);
     }
 
-    /**
-     * @param string $filename
-     *
-     * @return string
-     */
-    public function getFilePath($filename)
+    public function getFilePath(string $filename): string
     {
         return $this->targetDir . DIRECTORY_SEPARATOR . $filename;
     }
 
     /**
      * Generate the filename to store on disk
-     *
-     * @param UploadedFile $file
-     *
-     * @return string
      */
-    private function generateFilename(UploadedFile $file)
+    private function generateFilename(UploadedFile $file): string
     {
         $extension = $file->getClientOriginalExtension();
         $filename = str_replace('.' . $extension, '', $file->getClientOriginalName());
@@ -84,7 +63,7 @@ class UploadManager implements UploadManagerInterface
         return $filename;
     }
 
-    public function resolveUri($filename)
+    public function resolveUri(string $filename): string
     {
         return $this->webPath . '/' . $filename;
     }

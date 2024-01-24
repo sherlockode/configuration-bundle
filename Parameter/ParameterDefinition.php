@@ -4,43 +4,22 @@ namespace Sherlockode\ConfigurationBundle\Parameter;
 
 class ParameterDefinition
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var string
-     */
-    private $label;
+    private string $label;
 
-    /**
-     * @var string
-     */
-    private $defaultValue;
+    private ?string $defaultValue = null;
 
-    /**
-     * @var string
-     */
-    private $translationDomain;
+    private string $translationDomain;
 
-    /**
-     * @var array
-     */
-    private $options;
+    private array $options;
 
     /**
      * ParameterDefinition constructor.
-     *
-     * @param string $path
-     * @param string $type
      */
-    public function __construct($path, $type)
+    public function __construct(string $path, string $type)
     {
         $this->path = $path;
         $this->type = $type;
@@ -48,78 +27,53 @@ class ParameterDefinition
         $this->label = $this->path;
     }
 
-    /**
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     *
-     * @return $this
-     */
-    public function setLabel($label)
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getDefaultValue()
+    public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
     }
 
-    public function setDefaultValue($defaultValue)
+    public function setDefaultValue(?string $defaultValue): self
     {
         $this->defaultValue = $defaultValue;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return $this->translationDomain;
     }
 
-    /**
-     * @param string $translationDomain
-     *
-     * @return $this
-     */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain(string $translationDomain): self
     {
         $this->translationDomain = $translationDomain;
 
         return $this;
     }
 
-    /**
-     * @param string $optionName
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function getOption($optionName, $default = null)
+    public function getOption(string $optionName, mixed $default = null): mixed
     {
         if (!isset($this->options[$optionName])) {
             return $default;
@@ -128,19 +82,15 @@ class ParameterDefinition
         return $this->options[$optionName];
     }
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @param array $options
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->options = $options;
+
+        return $this;
     }
 }

@@ -9,13 +9,9 @@ class ConfigurationManager implements ConfigurationManagerInterface
     /**
      * @var ParameterDefinition[]
      */
-    private $definitions;
+    private array $definitions;
 
-    /**
-     * @param array        $config
-     * @param string|false $translationDomain
-     */
-    public function __construct($config = [], $translationDomain = false)
+    public function __construct(array $config = [], string|false $translationDomain = false)
     {
         $this->definitions = $this->processConfiguration($config, $translationDomain);
     }
@@ -25,18 +21,15 @@ class ConfigurationManager implements ConfigurationManagerInterface
      *
      * @return ParameterDefinition[]
      */
-    public function getDefinedParameters()
+    public function getDefinedParameters(): array
     {
         return $this->definitions;
     }
 
     /**
-     * @param string $path
-     *
-     * @return ParameterDefinition
      * @throws \Exception
      */
-    public function get($path)
+    public function get(string $path): ParameterDefinition
     {
         if (!isset($this->definitions[$path])) {
             throw new \Exception(sprintf('Undefined parameter path "%s"', $path));
@@ -45,23 +38,15 @@ class ConfigurationManager implements ConfigurationManagerInterface
         return $this->definitions[$path];
     }
 
-    /**
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function has($path)
+    public function has(string $path): bool
     {
         return isset($this->definitions[$path]);
     }
 
     /**
-     * @param array        $config
-     * @param string|false $translationDomain
-     *
      * @return ParameterDefinition[]
      */
-    private function processConfiguration($config, $translationDomain = false)
+    private function processConfiguration(array $config, string|false $translationDomain = false): array
     {
         $result = [];
         foreach ($config as $path => $data) {

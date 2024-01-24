@@ -8,30 +8,21 @@ use Twig\TwigFunction;
 
 class ParameterExtension extends AbstractExtension
 {
-    /**
-     * @var ParameterManagerInterface
-     */
-    private $parameterManager;
+    private ParameterManagerInterface $parameterManager;
 
     public function __construct(ParameterManagerInterface $parameterManager)
     {
         $this->parameterManager = $parameterManager;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('configuration_parameter', [$this, 'getParameterValue']),
         ];
     }
 
-    /**
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function getParameterValue(string $key, $default = null)
+    public function getParameterValue(string $key, mixed $default = null): mixed
     {
         return $this->parameterManager->get($key, $default);
     }

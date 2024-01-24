@@ -9,15 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ChoiceField extends AbstractField
 {
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return ChoiceType::class;
     }
 
-    public function getFormOptions(ParameterDefinition $definition)
+    public function getFormOptions(ParameterDefinition $definition): array
     {
         return [
             'choices' => $definition->getOption('choices', []),
@@ -27,17 +24,12 @@ class ChoiceField extends AbstractField
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'choice';
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return TransformerInterface
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         if ($definition->getOption('multiple', false)) {
             return new ArrayTransformer();

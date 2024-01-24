@@ -6,17 +6,7 @@ use Sherlockode\ConfigurationBundle\FieldType\FieldTypeInterface;
 
 interface FieldTypeManagerInterface
 {
-    /**
-     * @param FieldTypeInterface $fieldType
-     *
-     * @return $this
-     */
-    public function addFieldType(FieldTypeInterface $fieldType);
+    public function addFieldType(FieldTypeInterface $fieldType): self;
 
-    /**
-     * @param string $type
-     *
-     * @return FieldTypeInterface
-     */
-    public function getField($type);
+    public function getField(string $type): FieldTypeInterface;
 }

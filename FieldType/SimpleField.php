@@ -7,10 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SimpleField extends AbstractField
 {
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         $formType = $definition->getOption('subtype', TextType::class);
 
@@ -21,7 +18,7 @@ class SimpleField extends AbstractField
         return $formType;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'simple';
     }

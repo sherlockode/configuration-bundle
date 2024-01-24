@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class FieldTypePass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!class_exists('Doctrine\\ORM\\EntityManager')) {
             $container->removeDefinition('sherlockode_configuration.field.entity');

@@ -5,32 +5,24 @@ namespace Sherlockode\ConfigurationBundle\FieldType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sherlockode\ConfigurationBundle\Parameter\ParameterDefinition;
 use Sherlockode\ConfigurationBundle\Transformer\CallbackTransformer;
+use Sherlockode\ConfigurationBundle\Transformer\TransformerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class EntityField extends AbstractField
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $em
-     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return EntityType::class;
     }
 
-    public function getFormOptions(ParameterDefinition $definition)
+    public function getFormOptions(ParameterDefinition $definition): array
     {
         $options = [
             'class' => $definition->getOption('class'),
@@ -47,12 +39,12 @@ class EntityField extends AbstractField
         return $options;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'entity';
     }
 
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         $class = $definition->getOption('class');
         $multiple = $definition->getOption('multiple');

@@ -9,19 +9,14 @@ class FieldTypeManager implements FieldTypeManagerInterface
     /**
      * @var FieldTypeInterface[]
      */
-    private $fieldTypes;
+    private array $fieldTypes;
 
     public function __construct()
     {
         $this->fieldTypes = [];
     }
 
-    /**
-     * @param FieldTypeInterface $fieldType
-     *
-     * @return $this
-     */
-    public function addFieldType(FieldTypeInterface $fieldType)
+    public function addFieldType(FieldTypeInterface $fieldType): self
     {
         $this->fieldTypes[$fieldType->getName()] = $fieldType;
 
@@ -29,12 +24,9 @@ class FieldTypeManager implements FieldTypeManagerInterface
     }
 
     /**
-     * @param string $type
-     *
-     * @return FieldTypeInterface
      * @throws \Exception
      */
-    public function getField($type)
+    public function getField(string $type): FieldTypeInterface
     {
         if (!isset($this->fieldTypes[$type])) {
             throw new \Exception(sprintf('Unknown parameter type "%s"', $type));

@@ -9,32 +9,24 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class CheckboxField extends AbstractField
 {
-    /**
-     * @return string
-     */
-    public function getFormType(ParameterDefinition $definition)
+    public function getFormType(ParameterDefinition $definition): string
     {
         return CheckboxType::class;
     }
 
-    public function getFormOptions(ParameterDefinition $definition)
+    public function getFormOptions(ParameterDefinition $definition): array
     {
         return [
             'required' => $definition->getOption('required', false),
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'checkbox';
     }
 
-    /**
-     * @param ParameterDefinition $definition
-     *
-     * @return TransformerInterface
-     */
-    public function getModelTransformer(ParameterDefinition $definition)
+    public function getModelTransformer(ParameterDefinition $definition): ?TransformerInterface
     {
         return new BooleanTransformer();
     }

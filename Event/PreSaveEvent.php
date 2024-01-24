@@ -9,24 +9,15 @@ class PreSaveEvent
     use ResponseEventTrait;
     use RequestEventTrait;
 
-    /**
-     * @var array
-     */
-    private $parameters;
+    private array $parameters;
 
-    /**
-     * @param array $parameters
-     */
-    public function __construct(Request $request, $parameters)
+    public function __construct(Request $request, array $parameters)
     {
         $this->request = $request;
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
