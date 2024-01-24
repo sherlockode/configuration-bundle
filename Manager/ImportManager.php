@@ -12,12 +12,15 @@ class ImportManager implements ImportManagerInterface
 
     private ParameterConverterInterface $parameterConverter;
 
+    private ConfigurationManager $configurationManager;
+
     private AbstractVault $vault;
 
-    public function __construct(ParameterManagerInterface $parameterManager, ParameterConverterInterface $parameterConverter, AbstractVault $vault)
+    public function __construct(ParameterManagerInterface $parameterManager, ParameterConverterInterface $parameterConverter, ConfigurationManager $configurationManager, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
         $this->parameterConverter = $parameterConverter;
+        $this->configurationManager = $configurationManager;
         $this->vault = $vault;
     }
 
@@ -26,7 +29,9 @@ class ImportManager implements ImportManagerInterface
         $raw = Yaml::parseFile($source->getRealPath());
 
         foreach ($raw as $path => $stringValue) {
-            $this->parameterManager->set($path, $this->parameterConverter->getUserValue($path, $stringValue));
+            if ($this->configurationManager->has($path)) {
+                $this->parameterManager->set($path, $this->parameterConverter->getUserValue($path, $stringValue));
+            }
         }
 
         $this->parameterManager->save();
@@ -35,9 +40,12 @@ class ImportManager implements ImportManagerInterface
 
     public function importFromVault(): void
     {
-        foreach ($this->parameterManager->getAll() as $path => $value) {
-            $stringValue = $this->vault->reveal($path);
-            $this->parameterManager->set($path, $this->parameterConverter->getUserValue($path, $stringValue));
+        foreach ($this->configurationManager->getDefinedParameters() as $definition) {
+            $stringValue = $this->vault->reveal($definition->getPath());
+
+            if (null !== $stringValue) {
+                $this->parameterManager->set($definition->getPath(), $this->parameterConverter->getUserValue($definition->getPath(), $stringValue));
+            }
         }
 
         $this->parameterManager->save();
