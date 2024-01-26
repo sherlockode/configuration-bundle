@@ -62,6 +62,7 @@
         <service id="sherlockode_configuration.import_manager" class="Sherlockode\ConfigurationBundle\Manager\ImportManager">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
             <argument type="service" id="sherlockode_configuration.parameter_converter"/>
+            <argument type="service" id="sherlockode_configuration.configuration_manager"/>
             <argument type="service" id="secrets.vault"/>
         </service>
 
