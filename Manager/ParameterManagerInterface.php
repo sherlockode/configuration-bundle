@@ -25,14 +25,4 @@ interface ParameterManagerInterface
      * Set the value of a parameter at given path
      */
     public function set(string $path, mixed $value): self;
-
-    /**
-     * Get value as string
-     */
-    public function getStringValue(string $path, mixed $value): ?string;
-
-    /**
-     * Get user value
-     */
-    public function getUserValue(string $path, string $value): mixed;
 }

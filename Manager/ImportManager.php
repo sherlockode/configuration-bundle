@@ -10,11 +10,14 @@ class ImportManager implements ImportManagerInterface
 {
     private ParameterManagerInterface $parameterManager;
 
+    private ParameterConverterInterface $parameterConverter;
+
     private AbstractVault $vault;
 
-    public function __construct(ParameterManagerInterface $parameterManager, AbstractVault $vault)
+    public function __construct(ParameterManagerInterface $parameterManager, ParameterConverterInterface $parameterConverter, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
+        $this->parameterConverter = $parameterConverter;
         $this->vault = $vault;
     }
 
@@ -23,7 +26,7 @@ class ImportManager implements ImportManagerInterface
         $raw = Yaml::parseFile($source->getRealPath());
 
         foreach ($raw as $path => $stringValue) {
-            $this->parameterManager->set($path, $this->parameterManager->getUserValue($path, $stringValue));
+            $this->parameterManager->set($path, $this->parameterConverter->getUserValue($path, $stringValue));
         }
 
         $this->parameterManager->save();
@@ -34,7 +37,7 @@ class ImportManager implements ImportManagerInterface
     {
         foreach ($this->parameterManager->getAll() as $path => $value) {
             $stringValue = $this->vault->reveal($path);
-            $this->parameterManager->set($path, $this->parameterManager->getUserValue($path, $stringValue));
+            $this->parameterManager->set($path, $this->parameterConverter->getUserValue($path, $stringValue));
         }
 
         $this->parameterManager->save();

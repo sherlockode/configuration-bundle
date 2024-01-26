@@ -42,7 +42,7 @@ class ParameterManager implements ParameterManagerInterface
 
     private ConfigurationManagerInterface $configurationManager;
 
-    private FieldTypeManagerInterface $fieldTypeManager;
+    private ParameterConverterInterface $parameterConverter;
 
     /**
      * ParameterManager constructor.
@@ -51,7 +51,7 @@ class ParameterManager implements ParameterManagerInterface
         EntityManagerInterface $em,
         string $class,
         ConfigurationManagerInterface $configurationManager,
-        FieldTypeManagerInterface $fieldTypeManager
+        ParameterConverterInterface $parameterConverter
     ) {
         $this->em = $em;
         $this->class = $class;
@@ -60,7 +60,7 @@ class ParameterManager implements ParameterManagerInterface
         $this->newParameters = [];
         $this->data = [];
         $this->loaded = false;
-        $this->fieldTypeManager = $fieldTypeManager;
+        $this->parameterConverter = $parameterConverter;
     }
 
     public function getClass(): string
@@ -85,7 +85,7 @@ class ParameterManager implements ParameterManagerInterface
 
                 // check that every parameter has been transformed to its user value
                 if (!is_null($value)) {
-                    $this->data[$path] = $this->getUserValue($path, $value);
+                    $this->data[$path] = $this->parameterConverter->getUserValue($path, $value);
                 }
             }
         }
@@ -101,8 +101,8 @@ class ParameterManager implements ParameterManagerInterface
 
         if (isset($this->data[$path])) {
             return $this->data[$path];
-        } 
-        
+        }
+
         $value = null;
         if (isset($this->parameters[$path])) {
             $value = $this->parameters[$path]->getValue();
@@ -112,7 +112,7 @@ class ParameterManager implements ParameterManagerInterface
 
         // transform to user value only when the value is requested
         if (!is_null($value)) {
-            $this->data[$path] = $this->getUserValue($path, $value);
+            $this->data[$path] = $this->parameterConverter->getUserValue($path, $value);
             return $this->data[$path];
         }
 
@@ -134,9 +134,9 @@ class ParameterManager implements ParameterManagerInterface
             $this->parameters[$path] = $parameter;
             $this->newParameters[] = $parameter;
         }
-        $stringValue = $this->getStringValue($path, $value);
+        $stringValue = $this->parameterConverter->getStringValue($path, $value);
         $this->parameters[$path]->setValue($stringValue);
-        $this->data[$path] = $this->getUserValue($path, $stringValue);
+        $this->data[$path] = $this->parameterConverter->getUserValue($path, $stringValue);
 
         return $this;
     }
@@ -167,29 +167,5 @@ class ParameterManager implements ParameterManagerInterface
             $this->parameters[$parameter->getPath()] = $parameter;
         }
         $this->loaded = true;
-    }
-
-    public function getStringValue(string $path, mixed $value): ?string
-    {
-        $parameterConfig = $this->configurationManager->get($path);
-        $fieldType = $this->fieldTypeManager->getField($parameterConfig->getType());
-
-        if ($transformer = $fieldType->getModelTransformer($parameterConfig)) {
-            $value = $transformer->reverseTransform($value);
-        }
-
-        return $value;
-    }
-
-    public function getUserValue(string $path, ?string $value): mixed
-    {
-        $parameterDefinition = $this->configurationManager->get($path);
-        $fieldType = $this->fieldTypeManager->getField($parameterDefinition->getType());
-
-        if ($transformer = $fieldType->getModelTransformer($parameterDefinition)) {
-            $value = $transformer->transform($value);
-        }
-
-        return $value;
     }
 }

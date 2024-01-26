@@ -9,11 +9,14 @@ class ExportManager implements ExportManagerInterface
 {
     private ParameterManagerInterface $parameterManager;
 
+    private ParameterConverterInterface $parameterConverter;
+
     private AbstractVault $vault;
 
-    public function __construct(ParameterManagerInterface $parameterManager, AbstractVault $vault)
+    public function __construct(ParameterManagerInterface $parameterManager, ParameterConverterInterface $parameterConverter, AbstractVault $vault)
     {
         $this->parameterManager = $parameterManager;
+        $this->parameterConverter = $parameterConverter;
         $this->vault = $vault;
     }
 
@@ -21,7 +24,7 @@ class ExportManager implements ExportManagerInterface
     {
         $parameters = [];
         foreach ($this->parameterManager->getAll() as $path => $value) {
-            $stringValue = $this->parameterManager->getStringValue($path, $value);
+            $stringValue = $this->parameterConverter->getStringValue($path, $value);
 
             if (null !== $stringValue) {
                 $parameters[$path] = $stringValue;
@@ -37,7 +40,7 @@ class ExportManager implements ExportManagerInterface
     public function exportInVault(): void
     {
         foreach ($this->parameterManager->getAll() as $path => $value) {
-            $stringValue = $this->parameterManager->getStringValue($path, $value);
+            $stringValue = $this->parameterConverter->getStringValue($path, $value);
 
             if (null !== $stringValue) {
                 $this->vault->seal($path, $stringValue);

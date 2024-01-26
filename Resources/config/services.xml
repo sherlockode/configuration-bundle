@@ -34,6 +34,11 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument>%sherlockode_configuration.parameter_class%</argument>
             <argument type="service" id="sherlockode_configuration.configuration_manager"/>
+            <argument type="service" id="sherlockode_configuration.parameter_converter"/>
+        </service>
+
+        <service id="sherlockode_configuration.parameter_converter" class="Sherlockode\ConfigurationBundle\Manager\ParameterConverter">
+            <argument type="service" id="sherlockode_configuration.configuration_manager"/>
             <argument type="service" id="sherlockode_configuration.field_manager"/>
         </service>
 
@@ -50,11 +55,13 @@
 
         <service id="sherlockode_configuration.export_manager" class="Sherlockode\ConfigurationBundle\Manager\ExportManager">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument type="service" id="sherlockode_configuration.parameter_converter"/>
             <argument type="service" id="secrets.vault"/>
         </service>
 
         <service id="sherlockode_configuration.import_manager" class="Sherlockode\ConfigurationBundle\Manager\ImportManager">
             <argument type="service" id="sherlockode_configuration.parameter_manager"/>
+            <argument type="service" id="sherlockode_configuration.parameter_converter"/>
             <argument type="service" id="secrets.vault"/>
         </service>
 
@@ -78,6 +85,7 @@
         </service>
 
         <service id="Sherlockode\ConfigurationBundle\Manager\ParameterManagerInterface" alias="sherlockode_configuration.parameter_manager"/>
+        <service id="Sherlockode\ConfigurationBundle\Manager\ParameterConverterInterface" alias="sherlockode_configuration.parameter_converter"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\ConfigurationManagerInterface" alias="sherlockode_configuration.configuration_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\FieldTypeManagerInterface" alias="sherlockode_configuration.field_manager"/>
         <service id="Sherlockode\ConfigurationBundle\Manager\UploadManagerInterface" alias="sherlockode_configuration.upload_manager"/>
